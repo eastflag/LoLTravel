@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LoLTravel</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="main_title">LoLTravel</string>
+    <string name="main_content">
+        This application is to collect your leisure trips. \n
+		Allow this application to:\n
+		1) Your personal information\n
+		2) Your accountants as SNS\n
+		3) Your GPS data
+	</string>
+</resources>

@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:padding="20sp">
+
+    <TextView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/main_title"
+        android:textSize="25sp" />
+    
+    <LinearLayout style="@style/Line"
+        android:layout_marginTop="10dp" android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/main_content"
+        android:textSize="16sp" />
+
+</LinearLayout>
