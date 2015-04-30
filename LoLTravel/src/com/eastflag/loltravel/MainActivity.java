@@ -7,6 +7,8 @@ import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
+import com.eastflag.loltravel.fragment.SetupFragment;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
@@ -38,6 +41,9 @@ public class MainActivity extends Activity {
 	private ProgressDialog mProgressDialog;
 	
 	private String mId, mName, mEmail;
+	
+	private FragmentManager mFm;
+	private Fragment mFragment;
 	
 	private AQuery mAq;
 
@@ -66,6 +72,10 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
+		
+		findViewById(R.id.mainLayout).setVisibility(View.GONE);
+		mFragment = new SetupFragment();
+		mFm.beginTransaction().replace(R.id.container, mFragment).commit();
 	}
 	
 	@Override
@@ -76,6 +86,7 @@ public class MainActivity extends Activity {
 	
 	private void init() {
 		mAq = new AQuery(this);
+		mFm = getFragmentManager();
 		
 		findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
 			@Override
