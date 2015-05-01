@@ -26,11 +26,17 @@ import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.fragment.MyinfoFragment;
 import com.eastflag.loltravel.fragment.SetupFragment;
 import com.eastflag.loltravel.fragment.TripFragment;
+import com.eastflag.loltravel.service.MyLocationService;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
 import com.facebook.Response;
 import com.facebook.model.GraphUser;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationServices;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -59,6 +65,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		init();
+		
+		startService(new Intent(this, MyLocationService.class));
 		
 		//커스텀 액션바----------------------------------------------------------------------------------
 		ActionBar mActionBar = getActionBar();
@@ -123,6 +131,14 @@ public class MainActivity extends Activity {
 		mFm.beginTransaction().replace(R.id.container, mFragment).commit();*/
 	}
 	
+	
+	
+	@Override
+	protected void onDestroy() {
+		stopService(new Intent(this, MyLocationService.class));
+		super.onDestroy();
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -196,6 +212,8 @@ public class MainActivity extends Activity {
 				});
 			}
 		});
+		
+
 	}
 	
 	private void getProfile() {
