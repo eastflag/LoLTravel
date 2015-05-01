@@ -20,12 +20,43 @@
 	        android:layout_width="match_parent" android:layout_height="wrap_content"
 	        android:text="@string/main_content"
 	        android:textSize="16sp" />
-	
-	    <Button
-	        android:id="@+id/btnLogin"
+
+	    <LinearLayout
+	        android:id="@+id/beforeLogin"
 	        android:layout_width="match_parent" android:layout_height="wrap_content"
-	        android:layout_marginTop="50dp"
-	        android:text="facebook login" />
+	        android:layout_marginTop="30dp"
+	        android:orientation="vertical" >
+	        <Button
+	            android:id="@+id/btnLogin"
+	            style="@style/Button_small_black"
+	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:text="facebook login" />
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/afterLogin"
+	        android:layout_width="match_parent" android:layout_height="wrap_content"
+	        android:layout_marginTop="30dp"
+	        android:orientation="vertical"
+	        android:visibility="gone" >
+	        <Button
+	            android:id="@+id/btnSurvey"
+	            style="@style/Button_small_black"
+	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:text="Socioeconomic &amp; Residential Environment" />
+	        <Button
+	            android:id="@+id/btnMyInfo"
+	            style="@style/Button_small_black"
+	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:layout_marginTop="10dp" android:layout_marginBottom="10dp"
+	            android:text="My Information" />
+	        <Button
+	            android:id="@+id/btnTrip"
+	            style="@style/Button_small_black"
+	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:text="New Trip" />
+	    </LinearLayout>
+
     </LinearLayout>
     
     <FrameLayout

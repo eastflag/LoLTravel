@@ -7,9 +7,11 @@ import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
 import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class MainActivity extends Activity {
@@ -66,6 +69,46 @@ public class MainActivity extends Activity {
 		btnName.setVisibility(View.INVISIBLE);
 		mActionBar.setCustomView(mCustomView);
 		mActionBar.setDisplayShowCustomEnabled(true);
+		
+		btnLogout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+				builder.setTitle("LoLTravel")
+					.setMessage("로그아웃하시겠습니까?")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int arg1) {
+							dialog.dismiss();
+							mSimpleFacebook.logout(new OnLogoutListener() {
+								@Override
+								public void onFail(String reason) {
+
+								}
+								@Override
+								public void onException(Throwable throwable) {
+
+								}
+								@Override
+								public void onThinking() {
+
+								}
+								@Override
+								public void onLogout() {
+									refreshLogoutUI();
+								}
+							});
+						}
+					})
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					})
+					.show();
+			}
+		});
 	}
 	
 	@Override
@@ -73,9 +116,9 @@ public class MainActivity extends Activity {
 		super.onResume();
 		mSimpleFacebook = SimpleFacebook.getInstance(this);
 		
-		findViewById(R.id.mainLayout).setVisibility(View.GONE);
+		/*findViewById(R.id.mainLayout).setVisibility(View.GONE);
 		mFragment = new SetupFragment();
-		mFm.beginTransaction().replace(R.id.container, mFragment).commit();
+		mFm.beginTransaction().replace(R.id.container, mFragment).commit();*/
 	}
 	
 	@Override
@@ -84,9 +127,40 @@ public class MainActivity extends Activity {
 		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
 	}
 	
+	@Override
+	public void onBackPressed() {
+		if(mFragment == null) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("LoLTravel")
+				.setMessage("종료하시겠습니까?")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int arg1) {
+						dialog.dismiss();
+						finish();
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				})
+				.show();
+		} else {
+			mFm.beginTransaction().remove(mFragment).commit();
+			mFragment = null;
+			hideSubmenu();
+		}
+	}
+	
 	private void init() {
 		mAq = new AQuery(this);
 		mFm = getFragmentManager();
+		
+		findViewById(R.id.btnSurvey).setOnClickListener(mMenuClick);
+		findViewById(R.id.btnMyInfo).setOnClickListener(mMenuClick);
+		findViewById(R.id.btnTrip).setOnClickListener(mMenuClick);
 		
 		findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -148,20 +222,72 @@ public class MainActivity extends Activity {
 				mName = response.getName();
 				mId = response.getId();
 				mEmail = response.getEmail();
+				
+				//이메일 저장
+				PreferenceUtil.instance(MainActivity.this).setEmail(mEmail);
+				
 				Log.d("LDK", String.format("name:%s, id:%s, email:%s", mName, mId, mEmail));
 				refreshLoggedUI();
+				
+				checkSurveyExist();
 			}
 		});
 	}
 	
+	private void checkSurveyExist() {
+		String url = LoLApplication.HOST + LoLApplication.API_SURVEY_GET;
+		JSONObject json = new JSONObject();
+
+		try {
+			json.put("id", PreferenceUtil.instance(this).getEmail());
+			
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", json.toString(1));
+			
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					try {
+						//데이터 존재하지 않음
+						if(object.getInt("result") == 100) {
+							AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+							builder.setTitle("LoLTravel")
+								.setMessage("Socioeconomic and Residential environment do not exist. Please create a survey")
+								.setPositiveButton("Go to survey", new DialogInterface.OnClickListener() {
+								    @Override
+								    public void onClick(DialogInterface dialog, int which) {
+								    	mFragment = new SetupFragment();
+								    	showSubmenu();
+								    	
+								    	dialog.dismiss();
+								    	
+								    }
+								})
+								.setCancelable(false)
+								.show();
+						}
+
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void refreshLoggedUI() {
-		findViewById(R.id.mainLayout).setVisibility(View.GONE);
+		findViewById(R.id.beforeLogin).setVisibility(View.GONE);
+		findViewById(R.id.afterLogin).setVisibility(View.VISIBLE);
 		
 		btnLogout.setVisibility(View.VISIBLE);
 		btnName.setVisibility(View.VISIBLE);
 		btnName.setText(mName);
 		
-		String url = LoLApplication.HOST + LoLApplication.API_LOGIN_FACEBOOK;
+		//토큰 인증은 향후에...
+		/*String url = LoLApplication.HOST + LoLApplication.API_LOGIN_FACEBOOK;
 		JSONObject json = new JSONObject();
 		try {
 			json.put("_id", mEmail);
@@ -189,9 +315,47 @@ public class MainActivity extends Activity {
 			});
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
-
+		}*/
 	}
+	
+	private void refreshLogoutUI() {
+		findViewById(R.id.beforeLogin).setVisibility(View.VISIBLE);
+		findViewById(R.id.afterLogin).setVisibility(View.GONE);
+		
+		btnLogout.setVisibility(View.GONE);
+		btnName.setVisibility(View.GONE);
+	}
+	
+	private void showSubmenu() {
+		findViewById(R.id.mainLayout).setVisibility(View.GONE);
+		
+		mFm.beginTransaction().replace(R.id.container, mFragment).commit();
+	}
+	
+	private void hideSubmenu() {
+		findViewById(R.id.mainLayout).setVisibility(View.VISIBLE);
+	}
+	
+	View.OnClickListener mMenuClick = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			switch(v.getId()) {
+			case R.id.btnSurvey:
+				mFragment = new SetupFragment();
+				break;
+				
+			case R.id.btnMyInfo:
+				
+				return;
+				
+			case R.id.btnTrip:
+				
+				return;
+			}
+			
+			showSubmenu();
+		}
+	};
 
 	//페이스북 친구리스트 정책 변경됨
 	//graph API 1.x에서는 페이스북 모든 친구리스트를 가져왔으나, 보안문제로 2015.4.30일부터 막히고,

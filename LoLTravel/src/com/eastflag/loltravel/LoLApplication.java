@@ -12,7 +12,8 @@ public class LoLApplication extends Application {
 	public static final String HOST = "http://www.javabrain.kr:4000";
 	public static final String API_LOGIN_FACEBOOK = "/api/user/facebookAuth";
 	public static final String API_LOGIN_LOCAL = "/api/user/localAuth";
-	public static final String API_POLL_ADD = "/api/lol/poll/add";
+	public static final String API_SURVEY_ADD = "/api/lol/survey/add";
+	public static final String API_SURVEY_GET = "/api/lol/survey/get";
 	
 	private static final String APP_ID = "919687801386078";
 	private static final String APP_SECRET_KEY = "35b05ca2fedf4f1d7329e7393b13025f";

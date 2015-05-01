@@ -14,12 +14,20 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	private PreferenceUtil(Context context) {
 		super(context);
 	}
+	
+	public void setEmail(String email) {
+		put("email", email);
+	}
+	
+	public String getEmail() {
+		return get("email");
+	}
 
 	public void setToken(String token) {
 		put("token", token);
 	}
 	
 	public String getToken() {
-		return("token");
+		return get("token");
 	}
 }

@@ -267,7 +267,8 @@
     
     <Button
         android:id="@+id/submit"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        style="@style/Button_small_black"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Submit" />
 

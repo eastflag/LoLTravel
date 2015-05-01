@@ -19,6 +19,8 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.R;
+import com.eastflag.loltravel.dialog.LoadingDialog;
+import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.eastflag.loltravel.utils.Utils;
 
 /**
@@ -28,6 +30,7 @@ import com.eastflag.loltravel.utils.Utils;
 public class SetupFragment extends Fragment {
 	private View mView;
 	
+	private RadioGroup q11, q15, q21, q22, q23, q24, q25;
 	private EditText q12_input, q13_input, q14_input; 
 	
 	//answer
@@ -47,7 +50,7 @@ public class SetupFragment extends Fragment {
 		mAq = new AQuery(mView);
 		
 		//사회경제 조사------------------------------------------------------------------
-		RadioGroup q11 = (RadioGroup) mView.findViewById(R.id.q11);
+		q11 = (RadioGroup) mView.findViewById(R.id.q11);
 		q11.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -63,7 +66,7 @@ public class SetupFragment extends Fragment {
 		q13_input = (EditText) mView.findViewById(R.id.q13_input);
 		q14_input = (EditText) mView.findViewById(R.id.q14_input);
 		
-		RadioGroup q15 = (RadioGroup) mView.findViewById(R.id.q15);
+		q15 = (RadioGroup) mView.findViewById(R.id.q15);
 		q15.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -76,7 +79,7 @@ public class SetupFragment extends Fragment {
 		});
 		
 		//거주환경 조사------------------------------------------------------------------
-		RadioGroup q21 = (RadioGroup) mView.findViewById(R.id.q21);
+		q21 = (RadioGroup) mView.findViewById(R.id.q21);
 		q21.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -100,7 +103,7 @@ public class SetupFragment extends Fragment {
 			}
 		});
 		
-		RadioGroup q22 = (RadioGroup) mView.findViewById(R.id.q22);
+		q22 = (RadioGroup) mView.findViewById(R.id.q22);
 		q22.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -124,7 +127,7 @@ public class SetupFragment extends Fragment {
 			}
 		});
 		
-		RadioGroup q23 = (RadioGroup) mView.findViewById(R.id.q23);
+		q23 = (RadioGroup) mView.findViewById(R.id.q23);
 		q23.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -148,7 +151,7 @@ public class SetupFragment extends Fragment {
 			}
 		});
 		
-		RadioGroup q24 = (RadioGroup) mView.findViewById(R.id.q24);
+		q24 = (RadioGroup) mView.findViewById(R.id.q24);
 		q24.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -172,7 +175,7 @@ public class SetupFragment extends Fragment {
 			}
 		});
 		
-		RadioGroup q25 = (RadioGroup) mView.findViewById(R.id.q25);
+		q25 = (RadioGroup) mView.findViewById(R.id.q25);
 		q25.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -198,7 +201,160 @@ public class SetupFragment extends Fragment {
 		
 		mView.findViewById(R.id.submit).setOnClickListener(mSubmit);
 		
+		//데이터가 이미 존재하는지 가져옴
+		getSurvey();
+		
 		return mView;
+	}
+	
+	private void getSurvey() {
+		String url = LoLApplication.HOST + LoLApplication.API_SURVEY_GET;
+		JSONObject json = new JSONObject();
+
+		try {
+			json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+			
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", json.toString(1));
+			
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					try {
+						if(object.getInt("result") == 0) {
+							refreshUI(object.getJSONObject("data"));
+						} else {
+							
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void refreshUI(JSONObject json) throws JSONException {
+		a11 = json.getJSONObject("socioeconomic").getInt("sex");
+		a12 = json.getJSONObject("socioeconomic").getString("age");
+		a13 = json.getJSONObject("socioeconomic").getString("income");
+		a14 = json.getJSONObject("socioeconomic").getString("address");
+		a15 = json.getJSONObject("socioeconomic").getInt("drive_license");
+		
+		a21 = json.getJSONObject("residential").getInt("public_transport");
+		a22 = json.getJSONObject("residential").getInt("commercial_facility");
+		a23 = json.getJSONObject("residential").getInt("leisure_facility");
+		a24 = json.getJSONObject("residential").getInt("green_space");
+		a25 = json.getJSONObject("residential").getInt("floor_space");
+		
+		if(a11 == 1) {
+			q11.check(R.id.q11_1);
+		} else {
+			q11.check(R.id.q11_2);
+		}
+		
+		q12_input.setText(a12);
+		q13_input.setText(a13);
+		q14_input.setText(a14);
+		
+		if(a15 == 1) {
+			q15.check(R.id.q15_1);
+		} else {
+			q15.check(R.id.q15_2);
+		}
+		
+		switch(a21) {
+		case 1:
+			q21.check(R.id.q21_1);
+			break;
+		case 2:
+			q21.check(R.id.q21_2);
+			break;
+		case 3:
+			q21.check(R.id.q21_3);
+			break;
+		case 4:
+			q21.check(R.id.q21_4);
+			break;
+		case 5:
+			q21.check(R.id.q21_5);
+			break;
+		}
+		
+		switch(a22) {
+		case 1:
+			q22.check(R.id.q22_1);
+			break;
+		case 2:
+			q22.check(R.id.q22_2);
+			break;
+		case 3:
+			q22.check(R.id.q22_3);
+			break;
+		case 4:
+			q22.check(R.id.q22_4);
+			break;
+		case 5:
+			q22.check(R.id.q22_5);
+			break;
+		}
+		
+		switch(a23) {
+		case 1:
+			q23.check(R.id.q23_1);
+			break;
+		case 2:
+			q23.check(R.id.q23_2);
+			break;
+		case 3:
+			q23.check(R.id.q23_3);
+			break;
+		case 4:
+			q23.check(R.id.q23_4);
+			break;
+		case 5:
+			q23.check(R.id.q23_5);
+			break;
+		}
+		
+		switch(a24) {
+		case 1:
+			q24.check(R.id.q24_1);
+			break;
+		case 2:
+			q24.check(R.id.q24_2);
+			break;
+		case 3:
+			q24.check(R.id.q24_3);
+			break;
+		case 4:
+			q24.check(R.id.q24_4);
+			break;
+		case 5:
+			q24.check(R.id.q24_5);
+			break;
+		}
+		
+		switch(a25) {
+		case 1:
+			q25.check(R.id.q25_1);
+			break;
+		case 2:
+			q25.check(R.id.q25_2);
+			break;
+		case 3:
+			q25.check(R.id.q25_3);
+			break;
+		case 4:
+			q25.check(R.id.q25_4);
+			break;
+		case 5:
+			q25.check(R.id.q25_5);
+			break;
+		}
 	}
 
 	View.OnClickListener mSubmit = new View.OnClickListener() {
@@ -248,11 +404,14 @@ public class SetupFragment extends Fragment {
 			}
 			
 			//서버로 데이터 전송
-			String url = LoLApplication.HOST + LoLApplication.API_POLL_ADD;
+			LoadingDialog.showLoading(getActivity());
+			String url = LoLApplication.HOST + LoLApplication.API_SURVEY_ADD;
 			JSONObject json = new JSONObject();
 			JSONObject jsonSo = new JSONObject();
 			JSONObject jsonRe = new JSONObject();
 			try {
+				json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+				
 				jsonSo.put("sex", a11);
 				jsonSo.put("age", q12_input.getText().toString());
 				jsonSo.put("income", q13_input.getText().toString());
@@ -273,7 +432,9 @@ public class SetupFragment extends Fragment {
 				mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
 					@Override
 					public void callback(String url, JSONObject object, AjaxStatus status) {
-						
+						LoadingDialog.hideLoading();
+						//update or insert
+						Utils.showToast(getActivity(), "저장하였습니다");
 					}
 				});
 				
@@ -285,19 +446,23 @@ public class SetupFragment extends Fragment {
 }
 
 //입력 로그
-/*04-30 22:12:12.680: D/LDK(3827): { "socioeconomic": {
-04-30 22:12:12.680: D/LDK(3827):   "sex": 2,
-04-30 22:12:12.680: D/LDK(3827):   "age": "22",
-04-30 22:12:12.680: D/LDK(3827):   "income": "12345",
-04-30 22:12:12.680: D/LDK(3827):   "address": "경주",
-04-30 22:12:12.680: D/LDK(3827):   "drive_license": 2
-04-30 22:12:12.680: D/LDK(3827):  },
-04-30 22:12:12.680: D/LDK(3827):  "residential": {
-04-30 22:12:12.680: D/LDK(3827):   "public_transport": 1,
-04-30 22:12:12.680: D/LDK(3827):   "commercial_facility": 2,
-04-30 22:12:12.680: D/LDK(3827):   "leisure_facility": 3,
-04-30 22:12:12.680: D/LDK(3827):   "green_space": 4,
-04-30 22:12:12.680: D/LDK(3827):   "floor_space": 5
-04-30 22:12:12.680: D/LDK(3827):  }
-04-30 22:12:12.680: D/LDK(3827): }*/
+/* 
+ { 
+ 	"id" : "eastflag@gmail.com",
+	"socioeconomic": {
+		"sex": 2,
+		"age": "22",
+		"income": "12345",
+		"address": "경주",
+		"drive_license": 2
+ 	},
+	"residential": {
+		"public_transport": 1,
+		"commercial_facility": 2,
+		"leisure_facility": 3,
+		"green_space": 4,
+		"floor_space": 5
+	}
+}
+*/
 
