@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.R;
 import com.eastflag.loltravel.utils.Utils;
 
@@ -29,6 +33,8 @@ public class SetupFragment extends Fragment {
 	//answer
 	private int a11, a15, a21, a22, a23, a24, a25;
 	private String a12, a13, a14;
+	
+	private AQuery mAq;
 
 	public SetupFragment() {
 		// Required empty public constructor
@@ -38,6 +44,7 @@ public class SetupFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mView = View.inflate(getActivity(), R.layout.fragment_setup, null);
+		mAq = new AQuery(mView);
 		
 		//사회경제 조사------------------------------------------------------------------
 		RadioGroup q11 = (RadioGroup) mView.findViewById(R.id.q11);
@@ -241,6 +248,7 @@ public class SetupFragment extends Fragment {
 			}
 			
 			//서버로 데이터 전송
+			String url = LoLApplication.HOST + LoLApplication.API_POLL_ADD;
 			JSONObject json = new JSONObject();
 			JSONObject jsonSo = new JSONObject();
 			JSONObject jsonRe = new JSONObject();
@@ -259,7 +267,15 @@ public class SetupFragment extends Fragment {
 				jsonRe.put("floor_space", a25);
 				json.put("residential", jsonRe);
 				
+				Log.d("LDK", "url:" + url);
 				Log.d("LDK", json.toString(1));
+				
+				mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+					@Override
+					public void callback(String url, JSONObject object, AjaxStatus status) {
+						
+					}
+				});
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
