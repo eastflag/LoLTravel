@@ -23,7 +23,9 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
+import com.eastflag.loltravel.fragment.MyinfoFragment;
 import com.eastflag.loltravel.fragment.SetupFragment;
+import com.eastflag.loltravel.fragment.TripFragment;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserListCallback;
@@ -345,11 +347,11 @@ public class MainActivity extends Activity {
 				break;
 				
 			case R.id.btnMyInfo:
-				
-				return;
+				mFragment = new MyinfoFragment();
+				break;
 				
 			case R.id.btnTrip:
-				
+				mFragment = new TripFragment();
 				return;
 			}
 			
