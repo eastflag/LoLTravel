@@ -1,7 +1,5 @@
 package com.eastflag.loltravel;
 
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,8 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,15 +24,6 @@ import com.eastflag.loltravel.fragment.SetupFragment;
 import com.eastflag.loltravel.fragment.TripFragment;
 import com.eastflag.loltravel.service.MyLocationService;
 import com.eastflag.loltravel.utils.PreferenceUtil;
-import com.facebook.Request;
-import com.facebook.Request.GraphUserListCallback;
-import com.facebook.Response;
-import com.facebook.model.GraphUser;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationServices;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -370,7 +357,7 @@ public class MainActivity extends Activity {
 				
 			case R.id.btnTrip:
 				mFragment = new TripFragment();
-				return;
+				break;
 			}
 			
 			showSubmenu();

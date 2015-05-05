@@ -25,6 +25,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 	private String mLastUpdateTime;
 
 	public MyLocationService() {
+		
 	}
 
 	@Override
@@ -32,8 +33,6 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		// TODO: Return the communication channel to the service.
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
-	
-	
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -48,14 +47,12 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		mGoogleApiClient.connect();
 		
 		mLocationRequest = new LocationRequest();
-	    mLocationRequest.setInterval(10000);
-	    mLocationRequest.setFastestInterval(5000);
-	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	    mLocationRequest.setInterval(1000 * 60); //1분
+	    mLocationRequest.setFastestInterval(10000); 
+	    mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 	    
 		return START_STICKY;
 	}
-	
-	
 
 	@Override
 	public void onDestroy() {
@@ -74,6 +71,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
             //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
         }
         
+        //연결이 되면 위치 추적
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 	}
 

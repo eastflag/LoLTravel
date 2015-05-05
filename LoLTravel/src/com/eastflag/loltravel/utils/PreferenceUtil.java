@@ -30,4 +30,12 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	public String getToken() {
 		return get("token");
 	}
+	
+	public void setTravelInfo(String id) {
+		put("travel", id);
+	}
+	
+	public String getTravelInfo() {
+		return get("travel");
+	}
 }

@@ -1,0 +1,143 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+<LinearLayout
+    android:layout_width="match_parent" android:layout_height="350dp"
+    android:orientation="vertical" android:focusable="true" android:focusableInTouchMode="true"
+    android:padding="10dp" >
+
+	<!-- 여행 조사 **************************************************************-->
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" 
+        android:background="@drawable/btn_back_black_normal" android:padding="5dp">
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/q3"
+            android:textSize="22sp" android:textStyle="bold" />
+        <!-- Q31  -->
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/q31" android:textSize="16sp" />
+        <RadioGroup
+            android:id="@+id/q31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <RadioButton
+                android:id="@+id/q31_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q31_1" />
+            <RadioButton
+                android:id="@+id/q31_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q31_2" />
+        </RadioGroup>
+        <!-- Q32  -->
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/q32" android:textSize="16sp" />
+	    <RadioGroup
+            android:id="@+id/q32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RadioButton
+                android:id="@+id/q32_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q32_1" />
+            <RadioButton
+                android:id="@+id/q32_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q32_2" />
+            <RadioButton
+                android:id="@+id/q32_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q32_3" />
+            <RadioButton
+                android:id="@+id/q32_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q32_4" />
+            <RadioButton
+                android:id="@+id/q32_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q32_5" />
+        </RadioGroup>
+	    <!-- Q33  -->
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/q33" android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/q33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RadioButton
+                android:id="@+id/q33_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_1" />
+            <RadioButton
+                android:id="@+id/q33_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_2" />
+            <RadioButton
+                android:id="@+id/q33_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_3" />
+            <RadioButton
+                android:id="@+id/q33_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_4" />
+            <RadioButton
+                android:id="@+id/q33_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_5" />
+            <RadioButton
+                android:id="@+id/q33_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_6" />
+            <RadioButton
+                android:id="@+id/q33_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_7" />
+            <RadioButton
+                android:id="@+id/q33_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/q33_8" />
+        </RadioGroup>
+        
+        <LinearLayout style="@style/Line" 
+	        android:layout_marginTop="10dp" android:layout_marginBottom="10dp"></LinearLayout>
+	    
+	    <Button
+	        android:id="@+id/submit"
+	        style="@style/Button_small_black"
+	        android:layout_width="match_parent" android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:text="Submit" />
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>
