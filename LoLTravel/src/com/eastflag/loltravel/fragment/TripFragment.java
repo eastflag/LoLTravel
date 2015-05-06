@@ -21,6 +21,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.LoLApplication;
+import com.eastflag.loltravel.MainActivity;
 import com.eastflag.loltravel.R;
 import com.eastflag.loltravel.dialog.LoadingDialog;
 import com.eastflag.loltravel.utils.PreferenceUtil;
@@ -45,6 +46,7 @@ public class TripFragment extends Fragment {
 	
 	Button btnSurvey, btnOrigin, btnDestination;
 	private AlertDialog mDialog;
+	private MapFragment mapFragment;
 
 	public TripFragment() {
 		// Required empty public constructor
@@ -63,9 +65,11 @@ public class TripFragment extends Fragment {
 		btnOrigin.setOnClickListener(mClick);
 		btnDestination.setOnClickListener(mClick);
 		
-		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+		mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 		mGoogleMap = mapFragment.getMap();
 		
+		mLocation.setLatitude(((MainActivity)getActivity()).mLatitude);
+		mLocation.setLongitude(((MainActivity)getActivity()).mLongitude);
 		if(mLocation != null) {
 			Log.d("LDK", "loc:" + mLocation.getLatitude() + "," + mLocation.getLongitude());
 			mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
@@ -77,13 +81,22 @@ public class TripFragment extends Fragment {
 		return mView;
 	}
 	
+	@Override
+	public void onDestroy() {
+		if(mapFragment != null) {
+			getFragmentManager().beginTransaction().remove(mapFragment).commit();
+		}
+		super.onDestroy();
+	}
+
 	private void getTravelInfo() {
 		String travelId = PreferenceUtil.instance(getActivity()).getTravelInfo();
 		if(TextUtils.isEmpty(travelId)) {
+			showSurvery();
 			return;
 		}
 				
-		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_ADD;
+		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_GET;
 		JSONObject json = new JSONObject();
 
 		try {
@@ -98,6 +111,10 @@ public class TripFragment extends Fragment {
 					try {
 						if(object.getInt("result") == 0) {
 							Log.d("LDK", object.toString(1));
+							JSONObject json = object.getJSONObject("data").getJSONObject("travelInfo");
+							a31 = json.getInt("flight");
+							a32 = json.getInt("mode");
+							a33 = json.getInt("purpose");
 						} else {
 							
 						}
@@ -208,11 +225,60 @@ public class TripFragment extends Fragment {
 			}
 		});
 		
+		//이미 통행정보를 저장하였다면 저장된 데이터를 보여준다
+		if(a31>0) {
+			switch(a31) {
+			case 1: q31.check(R.id.q31_1); break;
+			case 2: q31.check(R.id.q31_2); break;
+			}
+		}
+		if(a32>0) {
+			switch(a32) {
+			case 1: q32.check(R.id.q32_1); break;
+			case 2: q32.check(R.id.q32_2); break;
+			case 3: q32.check(R.id.q32_3); break;
+			case 4: q32.check(R.id.q32_4); break;
+			case 5: q32.check(R.id.q32_5); break;
+			}
+		}
+		if(a33>0) {
+			switch(a33) {
+			case 1: q33.check(R.id.q33_1); break;
+			case 2: q33.check(R.id.q33_2); break;
+			case 3: q33.check(R.id.q33_3); break;
+			case 4: q33.check(R.id.q33_4); break;
+			case 5: q33.check(R.id.q33_5); break;
+			case 6: q33.check(R.id.q33_6); break;
+			case 7: q33.check(R.id.q33_7); break;
+			case 8: q33.check(R.id.q33_8); break;
+			}
+		}
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Travel Infomation")
 			.setView(view);
 		mDialog = builder.create();
 		mDialog.show();
+	}
+	
+	private void showOrigin() {
+		String msg = "Latitude: "+ mLocation.getLatitude() + "\r\n"
+				+ "Longitude: " +mLocation.getLongitude();
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("Origin")
+			.setMessage(msg)
+			.setPositiveButton("ok", null)
+			.show();
+	}
+	
+	private void showDestination() {
+		String msg = "Latitude: "+ mLocation.getLatitude() + "\r\n"
+				+ "Longitude: " +mLocation.getLongitude();
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("Destination")
+			.setMessage(msg)
+			.setPositiveButton("ok", null)
+			.show();
 	}
 	
 	private void postTravelInfo() {
@@ -268,7 +334,7 @@ public class TripFragment extends Fragment {
 				break;
 				
 			case R.id.button2:
-				
+				showOrigin();
 				break;
 				
 			case R.id.button3:
@@ -295,3 +361,16 @@ public class TripFragment extends Fragment {
 05-06 02:56:38.260: D/LDK(6453):  }
 05-06 02:56:38.260: D/LDK(6453): }*/
 
+/*05-07 00:36:21.932: D/LDK(20041): {
+05-07 00:36:21.932: D/LDK(20041):  "result": 0,
+05-07 00:36:21.932: D/LDK(20041):  "data": {
+05-07 00:36:21.932: D/LDK(20041):   "_id": "554a33b23775758199511f1a",
+05-07 00:36:21.932: D/LDK(20041):   "userId": "eastflag@gmail.com",
+05-07 00:36:21.932: D/LDK(20041):   "travelInfo": {
+05-07 00:36:21.932: D/LDK(20041):    "flight": 1,
+05-07 00:36:21.932: D/LDK(20041):    "mode": 2,
+05-07 00:36:21.932: D/LDK(20041):    "purpose": 3
+05-07 00:36:21.932: D/LDK(20041):   },
+05-07 00:36:21.932: D/LDK(20041):   "created": "2015-05-06T15:36:31.313Z"
+05-07 00:36:21.932: D/LDK(20041):  }
+05-07 00:36:21.932: D/LDK(20041): }*/

@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -69,6 +71,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
         	Log.d("LDK", "Location :" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
             //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
             //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+        	postLocation();
         }
         
         //연결이 되면 위치 추적
@@ -92,5 +95,20 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		mLastLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         Log.d("LDK", mLastUpdateTime + ":" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
+        postLocation();
+	}
+	
+	private void postLocation() {
+		//send location to activity
+		Intent intent = new Intent("com.eastflag.location");
+		intent.putExtra("lat", mLastLocation.getLatitude());
+		intent.putExtra("lng", mLastLocation.getLongitude());
+		sendBroadcast(intent);
+		
+		//if _id is not null, post to server
+		String _id = PreferenceUtil.instance(this).getTravelInfo();
+		if(!TextUtils.isEmpty(_id)) {
+			//post to server
+		}
 	}
 }

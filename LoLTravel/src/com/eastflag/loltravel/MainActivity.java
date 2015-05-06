@@ -9,9 +9,13 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -44,6 +48,16 @@ public class MainActivity extends Activity {
 	private Fragment mFragment;
 	
 	private AQuery mAq;
+	
+	public double mLatitude, mLongitude;
+	
+	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+	    @Override
+	    public void onReceive(Context context, Intent intent) {
+	    	mLatitude = intent.getDoubleExtra("lat", 0);
+	    	mLongitude = intent.getDoubleExtra("lng", 0);
+	    }
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +67,11 @@ public class MainActivity extends Activity {
 		
 		init();
 		
+		//앱 실행시 위치 조회 시작. 앱종료시에 만일 new trip 정보가 있다면 서비스를 종료하지 않는다.
 		startService(new Intent(this, MyLocationService.class));
+		
+		//서비스에서 보내오는 위치정보를 수신
+		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("com.eastflag.location"));
 		
 		//커스텀 액션바----------------------------------------------------------------------------------
 		ActionBar mActionBar = getActionBar();
