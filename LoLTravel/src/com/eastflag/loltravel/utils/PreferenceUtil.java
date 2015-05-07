@@ -38,4 +38,12 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	public String getTravelInfo() {
 		return get("travel");
 	}
+	
+	public void setOrigin(String date) {
+		put("origin", date);
+	}
+	
+	public String getOrigin() {
+		return get("origin");
+	}
 }

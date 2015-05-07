@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class MainActivity extends Activity {
 	    public void onReceive(Context context, Intent intent) {
 	    	mLatitude = intent.getDoubleExtra("lat", 0);
 	    	mLongitude = intent.getDoubleExtra("lng", 0);
+	    	Log.d("LDK", "MainActivity BR:" + mLatitude + "," + mLongitude);
 	    }
 	};
 
@@ -140,7 +142,9 @@ public class MainActivity extends Activity {
 	
 	@Override
 	protected void onDestroy() {
-		stopService(new Intent(this, MyLocationService.class));
+		if(TextUtils.isEmpty(PreferenceUtil.instance(this).getOrigin())) {
+			stopService(new Intent(this, MyLocationService.class));
+		}
 		super.onDestroy();
 	}
 

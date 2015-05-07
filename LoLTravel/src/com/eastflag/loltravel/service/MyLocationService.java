@@ -3,15 +3,24 @@ package com.eastflag.loltravel.service;
 import java.text.DateFormat;
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.utils.PreferenceUtil;
+import com.eastflag.loltravel.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -25,6 +34,8 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 	private Location mLastLocation;
 	private LocationRequest mLocationRequest;
 	private String mLastUpdateTime;
+	
+	private AQuery mAq;
 
 	public MyLocationService() {
 		
@@ -39,6 +50,8 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d("LDK", "onStartCommand");
+		
+		mAq = new AQuery(this);
 		
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
         .addConnectionCallbacks(this)
@@ -68,7 +81,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (mLastLocation != null) {
-        	Log.d("LDK", "Location :" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
+        	Log.d("LDK", "Service :" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
             //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
             //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
         	postLocation();
@@ -103,12 +116,43 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		Intent intent = new Intent("com.eastflag.location");
 		intent.putExtra("lat", mLastLocation.getLatitude());
 		intent.putExtra("lng", mLastLocation.getLongitude());
-		sendBroadcast(intent);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 		
-		//if _id is not null, post to server
-		String _id = PreferenceUtil.instance(this).getTravelInfo();
-		if(!TextUtils.isEmpty(_id)) {
+		//출발지 정보가 있으면 트래킹한다.
+		String originTime = PreferenceUtil.instance(this).getOrigin();
+		Log.d("LDK", "getOrigin:" + originTime);
+		if(!TextUtils.isEmpty(originTime)) {
 			//post to server
+			//서버로 데이터 전송
+			String url = LoLApplication.HOST + LoLApplication.API_LOCATION_ADD;
+			JSONObject json = new JSONObject();
+			try {
+				String _id = PreferenceUtil.instance(this).getTravelInfo();
+				json.put("travelId", _id);
+				
+				json.put("lat", mLastLocation.getLatitude());
+				json.put("lng", mLastLocation.getLongitude());
+				
+				Log.d("LDK", "url:" + url);
+				Log.d("LDK", json.toString(1));
+				
+				mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+					@Override
+					public void callback(String url, JSONObject object, AjaxStatus status) {
+						//update or insert
+						try {
+							if(object.getInt("result") == 0) {
+								Log.d("LDK", "result:" + object.toString(1));
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
