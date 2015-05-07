@@ -33,6 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.wearable.NodeApi.GetLocalNodeResult;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -131,6 +132,9 @@ public class TripFragment extends Fragment {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		
+		//트래킹 정보를 가져와서 지도에 뿌린다.
+		GetLocation();
 	}
 	
 	private void showSurvery() {
@@ -279,17 +283,25 @@ public class TripFragment extends Fragment {
 					postOrigin();
 				}
 			})
-			.setNegativeButton("cancel", null)
+			.setNegativeButton("Cancel", null)
 			.show();
 	}
 	
+	//Destination 입력 다이얼로그
 	private void showDestination() {
 		String msg = "Latitude: "+ mLocation.getLatitude() + "\r\n"
 				+ "Longitude: " +mLocation.getLongitude();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Destination")
 			.setMessage(msg)
-			.setPositiveButton("ok", null)
+			.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					//서버에 origin 정보 저장후 지속적인 트래킹
+					postDestination();
+				}
+			})
+			.setNegativeButton("Cancel", null)
 			.show();
 	}
 	
@@ -367,6 +379,76 @@ public class TripFragment extends Fragment {
 							PreferenceUtil.instance(getActivity()).setOrigin(DateFormat.getTimeInstance().format(new Date()));
 							//출발지 입력 금지
 							//btnOrigin.setEnabled(false);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void postDestination() {
+		//서버로 데이터 전송
+		LoadingDialog.showLoading(getActivity());
+		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_ADD;
+		JSONObject json = new JSONObject();
+		JSONObject jsonSo = new JSONObject();
+		try {
+			json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+			
+			jsonSo.put("lat", mLocation.getLatitude());
+			jsonSo.put("lng", mLocation.getLongitude());
+			json.put("destination", jsonSo);
+			
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", json.toString(1));
+			
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					LoadingDialog.hideLoading();
+					//update or insert
+					try {
+						if(object.getInt("result") == 0) {
+							Log.d("LDK", "result:" + object.toString(1));
+							
+							Utils.showToast(getActivity(), "저장하였습니다");
+							//여행정보와 출발지 시간을 pref에서 제거
+							PreferenceUtil.instance(getActivity()).setTravelInfo("");
+							PreferenceUtil.instance(getActivity()).setOrigin("");
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void GetLocation() {
+		String url = LoLApplication.HOST + LoLApplication.API_LOCATION_GET;
+		JSONObject json = new JSONObject();
+		try {
+			String _id = PreferenceUtil.instance(getActivity()).getTravelInfo();
+			json.put("travelId", _id);
+			
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", json.toString(1));
+			
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					//update or insert
+					try {
+						if(object.getInt("result") == 0) {
+							Log.d("LDK", "result:" + object.toString(1));
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
