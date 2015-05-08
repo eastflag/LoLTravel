@@ -1,8 +1,10 @@
 package com.eastflag.loltravel.fragment;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,13 +29,13 @@ import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.MainActivity;
 import com.eastflag.loltravel.R;
 import com.eastflag.loltravel.dialog.LoadingDialog;
+import com.eastflag.loltravel.dto.MyLocation;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.eastflag.loltravel.utils.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.wearable.NodeApi.GetLocalNodeResult;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -334,7 +336,7 @@ public class TripFragment extends Fragment {
 							mDialog.dismiss();
 							Utils.showToast(getActivity(), "저장하였습니다");
 							//new trip 정보 저장
-							String _id = object.getJSONObject("data").getJSONArray("upserted").getJSONObject(0).getString("_id");
+							String _id = object.getJSONObject("data").getString("_id");
 							PreferenceUtil.instance(getActivity()).setTravelInfo(_id);
 							//show origin
 						}
@@ -352,7 +354,7 @@ public class TripFragment extends Fragment {
 	private void postOrigin() {
 		//서버로 데이터 전송
 		LoadingDialog.showLoading(getActivity());
-		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_ADD;
+		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_UPDATE;
 		JSONObject json = new JSONObject();
 		JSONObject jsonSo = new JSONObject();
 		try {
@@ -394,7 +396,7 @@ public class TripFragment extends Fragment {
 	private void postDestination() {
 		//서버로 데이터 전송
 		LoadingDialog.showLoading(getActivity());
-		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_ADD;
+		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_UPDATE;
 		JSONObject json = new JSONObject();
 		JSONObject jsonSo = new JSONObject();
 		try {
@@ -448,7 +450,16 @@ public class TripFragment extends Fragment {
 					//update or insert
 					try {
 						if(object.getInt("result") == 0) {
-							Log.d("LDK", "result:" + object.toString(1));
+							ArrayList<MyLocation> mMyLocationList = new ArrayList<MyLocation>();
+							JSONArray array = object.getJSONArray("data");
+							for(int i=0; i< array.length(); ++i) {
+								MyLocation loc = new MyLocation();
+								JSONObject json = array.getJSONObject(i);
+								loc.lat = json.getDouble("lat");
+								loc.lng = json.getDouble("lng");
+								loc.created = json.getString("created");
+								mMyLocationList.add(loc);
+							}
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -474,7 +485,7 @@ public class TripFragment extends Fragment {
 				break;
 				
 			case R.id.button3:
-				
+				showDestination();
 				break;
 			}
 		}
@@ -482,31 +493,34 @@ public class TripFragment extends Fragment {
 }
 
 //travel info insert
-/*05-06 02:56:38.260: D/LDK(6453): result:{
-05-06 02:56:38.260: D/LDK(6453):  "result": 0,
-05-06 02:56:38.260: D/LDK(6453):  "data": {
-05-06 02:56:38.260: D/LDK(6453):   "ok": 1,
-05-06 02:56:38.260: D/LDK(6453):   "nModified": 0,
-05-06 02:56:38.260: D/LDK(6453):   "n": 1,
-05-06 02:56:38.260: D/LDK(6453):   "upserted": [
-05-06 02:56:38.260: D/LDK(6453):    {
-05-06 02:56:38.260: D/LDK(6453):     "index": 0,
-05-06 02:56:38.260: D/LDK(6453):     "_id": "5549045b3775758199511f18"
-05-06 02:56:38.260: D/LDK(6453):    }
-05-06 02:56:38.260: D/LDK(6453):   ]
-05-06 02:56:38.260: D/LDK(6453):  }
-05-06 02:56:38.260: D/LDK(6453): }*/
+/*
+ result:{
+ "result": 0,
+ "data": {
+  "__v": 0,
+  "userId": "eastflag@gmail.com",
+  "_id": "554c1773269b3d580f9217d7",
+  "travelInfo": {
+   "flight": 1,
+   "mode": 2,
+   "purpose": 3
+  },
+  "created": "2015-05-08T01:54:59.479Z"
+ }
+} 
+ */
 
-/*05-07 00:36:21.932: D/LDK(20041): {
-05-07 00:36:21.932: D/LDK(20041):  "result": 0,
-05-07 00:36:21.932: D/LDK(20041):  "data": {
-05-07 00:36:21.932: D/LDK(20041):   "_id": "554a33b23775758199511f1a",
-05-07 00:36:21.932: D/LDK(20041):   "userId": "eastflag@gmail.com",
-05-07 00:36:21.932: D/LDK(20041):   "travelInfo": {
-05-07 00:36:21.932: D/LDK(20041):    "flight": 1,
-05-07 00:36:21.932: D/LDK(20041):    "mode": 2,
-05-07 00:36:21.932: D/LDK(20041):    "purpose": 3
-05-07 00:36:21.932: D/LDK(20041):   },
-05-07 00:36:21.932: D/LDK(20041):   "created": "2015-05-06T15:36:31.313Z"
-05-07 00:36:21.932: D/LDK(20041):  }
-05-07 00:36:21.932: D/LDK(20041): }*/
+/*
+http://www.javabrain.kr:4000/api/lol/location/get
+{
+    "result": 0,
+    "data": [{
+        "_id": "554c1813269b3d580f9217d9",
+        "travelId": "554c180a269b3d580f9217d8",
+        "lat": 37.5275129,
+        "lng": 126.7148948,
+        "__v": 0,
+        "created": "2015-05-08T01:57:39.283Z"
+    }, {
+    ...
+    */

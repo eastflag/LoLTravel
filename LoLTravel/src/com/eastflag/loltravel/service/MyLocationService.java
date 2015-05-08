@@ -62,7 +62,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		mGoogleApiClient.connect();
 		
 		mLocationRequest = new LocationRequest();
-	    mLocationRequest.setInterval(1000 * 60); //1분
+	    mLocationRequest.setInterval(1000 * 60 * 5); //5분
 	    mLocationRequest.setFastestInterval(10000); 
 	    mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 	    
@@ -121,7 +121,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		//출발지 정보가 있으면 트래킹한다.
 		String originTime = PreferenceUtil.instance(this).getOrigin();
 		Log.d("LDK", "getOrigin:" + originTime);
-		if(!TextUtils.isEmpty(originTime)) {
+		if(!TextUtils.isEmpty(originTime) && !TextUtils.isEmpty(PreferenceUtil.instance(this).getTravelInfo())) {
 			//post to server
 			//서버로 데이터 전송
 			String url = LoLApplication.HOST + LoLApplication.API_LOCATION_ADD;
