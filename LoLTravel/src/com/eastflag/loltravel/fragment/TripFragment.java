@@ -2,6 +2,9 @@ package com.eastflag.loltravel.fragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -463,11 +466,24 @@ public class TripFragment extends Fragment {
 								mMyLocationList.add(loc);
 							}
 							
+							Collections.sort(mMyLocationList, new Comparator<MyLocation>() {
+								@Override
+								public int compare(MyLocation lhs,MyLocation rhs) {
+									lhs.created.compareTo(rhs.created);
+									return 0;
+								}
+
+							});
+							
+							for(MyLocation locatoin : mMyLocationList) {
+								Log.d("LDK", locatoin.created + ":" + locatoin.lat + "," + locatoin.lng);
+							}
+							
 							for (int i = 0; i < mMyLocationList.size() - 1; ++i) {
 								mGoogleMap.addPolyline(new PolylineOptions()
 				                        .add(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng),
 				                                new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
-				                        .width(5).color(Color.RED).geodesic(true));
+				                        .width(10).color(Color.RED).geodesic(true));
 				            }
 						}
 					} catch (JSONException e) {
