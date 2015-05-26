@@ -71,8 +71,7 @@ public class TripFragment extends Fragment {
 		btnOrigin.setOnClickListener(mClick);
 		btnDestination.setOnClickListener(mClick);
 		
-		mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-		mGoogleMap = mapFragment.getMap();
+		setUpMapIfNeeded();
 		
 		mLocation = new Location("dummyprovider");
 		mLocation.setLatitude(((MainActivity)getActivity()).mLatitude);
@@ -94,6 +93,15 @@ public class TripFragment extends Fragment {
 			getFragmentManager().beginTransaction().remove(mapFragment).commit();
 		}
 		super.onDestroy();
+	}
+	
+	
+	private void setUpMapIfNeeded() {
+		// check if we have got the googleMap already
+		if (mGoogleMap == null) {
+			mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+			mGoogleMap = mapFragment.getMap();
+		}
 	}
 
 	private void getTravelInfo() {
