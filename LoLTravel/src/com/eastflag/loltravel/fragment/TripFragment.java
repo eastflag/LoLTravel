@@ -2,6 +2,9 @@ package com.eastflag.loltravel.fragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -11,6 +14,7 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -36,6 +40,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +84,7 @@ public class TripFragment extends Fragment {
 		if(mLocation != null) {
 			Log.d("LDK", "loc:" + mLocation.getLatitude() + "," + mLocation.getLongitude());
 			mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 16));
+                    new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13));
 		}
 		
 		getTravelInfo();
@@ -388,7 +393,7 @@ public class TripFragment extends Fragment {
 							//출발지를 입력한 시간 저장
 							PreferenceUtil.instance(getActivity()).setOrigin(DateFormat.getTimeInstance().format(new Date()));
 							//출발지 입력 금지
-							//btnOrigin.setEnabled(false);
+							btnOrigin.setEnabled(false);
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -468,6 +473,26 @@ public class TripFragment extends Fragment {
 								loc.created = json.getString("created");
 								mMyLocationList.add(loc);
 							}
+							
+							Collections.sort(mMyLocationList, new Comparator<MyLocation>() {
+								@Override
+								public int compare(MyLocation lhs,MyLocation rhs) {
+									lhs.created.compareTo(rhs.created);
+									return 0;
+								}
+
+							});
+							
+							for(MyLocation locatoin : mMyLocationList) {
+								Log.d("LDK", locatoin.created + ":" + locatoin.lat + "," + locatoin.lng);
+							}
+							
+							for (int i = 0; i < mMyLocationList.size() - 1; ++i) {
+								mGoogleMap.addPolyline(new PolylineOptions()
+				                        .add(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng),
+				                                new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
+				                        .width(10).color(Color.RED).geodesic(true));
+				            }
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
