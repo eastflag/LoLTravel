@@ -1,3 +1,7 @@
+* schema
+user - survey
+     - travel - location
+
 * new trip
 설문조사 정보를 저장하면 travelId 를 preference에 저장
 초기 접속시에 travelId가 없으면 설문조사 창을 띄운다.

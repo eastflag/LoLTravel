@@ -1,13 +1,18 @@
 package com.eastflag.loltravel.service;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -36,9 +41,11 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 	private String mLastUpdateTime;
 	
 	private AQuery mAq;
+	
+	private Geocoder geocoder;
 
 	public MyLocationService() {
-		
+		geocoder = new Geocoder(this, Locale.getDefault());
 	}
 
 	@Override
@@ -63,7 +70,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		
 		mLocationRequest = new LocationRequest();
 	    mLocationRequest.setInterval(1000 * 60 * 5); //5분
-	    mLocationRequest.setFastestInterval(10000); 
+	    mLocationRequest.setFastestInterval(1000 * 60 * 5); //5분
 	    mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 	    
 		return START_STICKY;
@@ -80,12 +87,28 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		Log.d("LDK", "Location onConnected:");
 		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (mLastLocation != null) {
-        	Log.d("LDK", "Service :" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
-            //mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-            //mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-        	postLocation();
-        }
+		if (mLastLocation != null) {
+			Log.d("LDK", "Service :" + mLastLocation.getLatitude()
+					+ mLastLocation.getLongitude());
+			// mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+			// mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+
+			// geocoding
+			List<Address> addresses = null;
+			try {
+				addresses = geocoder.getFromLocation(
+						mLastLocation.getLatitude(),
+						mLastLocation.getLongitude(), 1);
+			} catch (IOException ioException) {
+				Log.d("LDK", ioException.getMessage());
+			} catch (IllegalArgumentException illegalArgumentException) {
+				Log.d("LDK", illegalArgumentException.getMessage());
+			}
+			
+			Log.d("LDK", "geocoding:" + addresses.get(0));
+
+			postLocation();
+		}
         
         //연결이 되면 위치 추적
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);

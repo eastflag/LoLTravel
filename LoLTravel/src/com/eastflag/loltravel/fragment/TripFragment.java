@@ -477,8 +477,7 @@ public class TripFragment extends Fragment {
 							Collections.sort(mMyLocationList, new Comparator<MyLocation>() {
 								@Override
 								public int compare(MyLocation lhs,MyLocation rhs) {
-									lhs.created.compareTo(rhs.created);
-									return 0;
+									return lhs.created.compareTo(rhs.created);
 								}
 
 							});
