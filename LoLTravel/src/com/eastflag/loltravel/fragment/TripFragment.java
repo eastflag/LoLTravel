@@ -1,11 +1,14 @@
 package com.eastflag.loltravel.fragment;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +18,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -51,7 +56,8 @@ public class TripFragment extends Fragment {
 	private View mView;
 	private AQuery mAq;
 	private GoogleMap mGoogleMap;
-	Location mLocation;
+	private Location mLocation;
+	private String mAddress;
 	
 	private int a31, a32, a33;
 	
@@ -135,6 +141,14 @@ public class TripFragment extends Fragment {
 							a31 = json.getInt("flight");
 							a32 = json.getInt("mode");
 							a33 = json.getInt("purpose");
+							
+							//출발을 입력했다면 출발지 버튼을 비활성화 시키고, 트래킹 정보를 가져와서 지도에 뿌린다.
+							if(object.getJSONObject("data").has("origin")) {
+								btnOrigin.setEnabled(false);
+								btnOrigin.setClickable(false);
+								btnOrigin.setTextColor(Color.GRAY);
+								GetLocation();
+							}
 						} else {
 							
 						}
@@ -147,9 +161,6 @@ public class TripFragment extends Fragment {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		//트래킹 정보를 가져와서 지도에 뿌린다.
-		GetLocation();
 	}
 	
 	private void showSurvery() {
@@ -286,8 +297,8 @@ public class TripFragment extends Fragment {
 	
 	//Origin 입력 다이얼로그
 	private void showOrigin() {
-		String msg = "Latitude: "+ mLocation.getLatitude() + "\r\n"
-				+ "Longitude: " +mLocation.getLongitude();
+		String msg = getMsgOfLocation();
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Origin")
 			.setMessage(msg)
@@ -301,11 +312,35 @@ public class TripFragment extends Fragment {
 			.setNegativeButton("Cancel", null)
 			.show();
 	}
+
+	private String getMsgOfLocation() {
+		String msg = "Latitude: "+ mLocation.getLatitude() + "\r\n"
+				+ "Longitude: " +mLocation.getLongitude();
+		Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+		List<Address> addresses = null;
+		try {
+			addresses = geocoder.getFromLocation(
+					mLocation.getLatitude(),
+					mLocation.getLongitude(), 1);
+		} catch (IOException ioException) {
+			Log.d("LDK", ioException.getMessage());
+		} catch (IllegalArgumentException illegalArgumentException) {
+			Log.d("LDK", illegalArgumentException.getMessage());
+		}
+		if(addresses.size()>0) {
+			mAddress = addresses.get(0).getAddressLine(0);
+			msg += "\r\n" + "주소: " + mAddress;
+		} else {
+			mAddress = "";
+		}
+		
+		return msg;
+	}
 	
 	//Destination 입력 다이얼로그
 	private void showDestination() {
-		String msg = "Latitude: "+ mLocation.getLatitude() + "\r\n"
-				+ "Longitude: " +mLocation.getLongitude();
+		String msg = getMsgOfLocation();
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Destination")
 			.setMessage(msg)
@@ -371,10 +406,11 @@ public class TripFragment extends Fragment {
 		JSONObject json = new JSONObject();
 		JSONObject jsonSo = new JSONObject();
 		try {
-			json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+			json.put("id", PreferenceUtil.instance(getActivity()).getTravelInfo());
 			
 			jsonSo.put("lat", mLocation.getLatitude());
 			jsonSo.put("lng", mLocation.getLongitude());
+			jsonSo.put("address", mAddress);
 			json.put("origin", jsonSo);
 			
 			Log.d("LDK", "url:" + url);
@@ -394,6 +430,8 @@ public class TripFragment extends Fragment {
 							PreferenceUtil.instance(getActivity()).setOrigin(DateFormat.getTimeInstance().format(new Date()));
 							//출발지 입력 금지
 							btnOrigin.setEnabled(false);
+							btnOrigin.setClickable(false);
+							btnOrigin.setTextColor(Color.GRAY);
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -413,10 +451,11 @@ public class TripFragment extends Fragment {
 		JSONObject json = new JSONObject();
 		JSONObject jsonSo = new JSONObject();
 		try {
-			json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+			json.put("id", PreferenceUtil.instance(getActivity()).getTravelInfo());
 			
 			jsonSo.put("lat", mLocation.getLatitude());
 			jsonSo.put("lng", mLocation.getLongitude());
+			jsonSo.put("address", mAddress);
 			json.put("destination", jsonSo);
 			
 			Log.d("LDK", "url:" + url);
@@ -435,6 +474,9 @@ public class TripFragment extends Fragment {
 							//여행정보와 출발지 시간을 pref에서 제거
 							PreferenceUtil.instance(getActivity()).setTravelInfo("");
 							PreferenceUtil.instance(getActivity()).setOrigin("");
+							
+							//go to Main
+							((MainActivity)getActivity()).onBackPressed();
 						}
 					} catch (JSONException e) {
 						e.printStackTrace();

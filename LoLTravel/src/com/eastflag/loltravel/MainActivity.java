@@ -29,6 +29,7 @@ import com.eastflag.loltravel.fragment.SetupFragment;
 import com.eastflag.loltravel.fragment.TripFragment;
 import com.eastflag.loltravel.service.MyLocationService;
 import com.eastflag.loltravel.utils.PreferenceUtil;
+import com.eastflag.loltravel.utils.SharedObjects;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -68,6 +69,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		init();
+		
+		SharedObjects.context = getApplicationContext();
 		
 		//앱 실행시 위치 조회 시작. 앱종료시에 만일 new trip 정보가 있다면 서비스를 종료하지 않는다.
 		startService(new Intent(this, MyLocationService.class));

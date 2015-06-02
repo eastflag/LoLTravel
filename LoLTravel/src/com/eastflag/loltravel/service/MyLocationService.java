@@ -25,7 +25,7 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.utils.PreferenceUtil;
-import com.eastflag.loltravel.utils.Utils;
+import com.eastflag.loltravel.utils.SharedObjects;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -41,11 +41,9 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 	private String mLastUpdateTime;
 	
 	private AQuery mAq;
-	
-	private Geocoder geocoder;
 
 	public MyLocationService() {
-		geocoder = new Geocoder(this, Locale.getDefault());
+		
 	}
 
 	@Override
@@ -70,8 +68,8 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		
 		mLocationRequest = new LocationRequest();
 	    mLocationRequest.setInterval(1000 * 60 * 5); //5분
-	    mLocationRequest.setFastestInterval(1000 * 60 * 5); //5분
-	    mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+	    mLocationRequest.setFastestInterval(1000 * 60 * 1);
+	    mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
 	    
 		return START_STICKY;
 	}
@@ -92,20 +90,6 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 					+ mLastLocation.getLongitude());
 			// mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
 			// mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-
-			// geocoding
-			List<Address> addresses = null;
-			try {
-				addresses = geocoder.getFromLocation(
-						mLastLocation.getLatitude(),
-						mLastLocation.getLongitude(), 1);
-			} catch (IOException ioException) {
-				Log.d("LDK", ioException.getMessage());
-			} catch (IllegalArgumentException illegalArgumentException) {
-				Log.d("LDK", illegalArgumentException.getMessage());
-			}
-			
-			Log.d("LDK", "geocoding:" + addresses.get(0));
 
 			postLocation();
 		}
@@ -155,6 +139,25 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 				
 				json.put("lat", mLastLocation.getLatitude());
 				json.put("lng", mLastLocation.getLongitude());
+				
+				List<Address> addresses = null;
+				try {
+					Geocoder geocoder = new Geocoder(SharedObjects.context, Locale.getDefault());
+					addresses = geocoder.getFromLocation(
+							mLastLocation.getLatitude(),
+							mLastLocation.getLongitude(), 1);
+				} catch (IOException ioException) {
+					Log.d("LDK", ioException.getMessage());
+				} catch (IllegalArgumentException illegalArgumentException) {
+					Log.d("LDK", illegalArgumentException.getMessage());
+				} catch (NullPointerException e) {
+					
+				}
+				if(addresses != null && addresses.size() > 0) {
+					json.put("address", addresses.get(0).getAddressLine(0));
+				} else {
+					json.put("address", "");
+				}
 				
 				Log.d("LDK", "url:" + url);
 				Log.d("LDK", json.toString(1));
