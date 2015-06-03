@@ -6,12 +6,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.androidquery.AQuery;
@@ -19,7 +25,7 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.R;
-import com.eastflag.loltravel.adapter.LocationHistoryAdapter;
+import com.eastflag.loltravel.adapter.TravelHistoryAdapter;
 import com.eastflag.loltravel.dto.MyTravel;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 
@@ -31,7 +37,7 @@ public class MyinfoFragment extends Fragment {
 	
 	private View mView;
 	private ListView mListView;
-	private LocationHistoryAdapter mAdapter;
+	private TravelHistoryAdapter mAdapter;
 	private ArrayList<MyTravel> mTravelList = new ArrayList<MyTravel>();
 	
 	private AQuery mAq;
@@ -48,8 +54,16 @@ public class MyinfoFragment extends Fragment {
 		mAq = new AQuery(mView);
 		
 		mListView = (ListView) mView.findViewById(R.id.lvHistory);
-		mAdapter = new LocationHistoryAdapter(getActivity(), mTravelList);
+		mAdapter = new TravelHistoryAdapter(getActivity(), mTravelList);
 		mListView.setAdapter(mAdapter);
+		
+		mListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		getHistory();
 		
@@ -100,6 +114,35 @@ public class MyinfoFragment extends Fragment {
 		}
 	}
 
+	public static class LocationDialogFragment extends DialogFragment {
+
+        public static LocationDialogFragment newInstance(String travelId) {
+        	LocationDialogFragment frag = new LocationDialogFragment();
+            Bundle args = new Bundle();
+            args.putString("travelId", travelId);
+            frag.setArguments(args);
+            return frag;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            String deviceNames = getArguments().getString("travelId");
+            
+            final View view;
+
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle("Location History")
+                    .setPositiveButton("Close",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                    //.setView(view)
+                    .create();
+        }
+    }
+	
+	
 }
 
 /*url:http://www.javabrain.kr:4000/api/lol/travel/getlist

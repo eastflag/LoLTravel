@@ -11,11 +11,11 @@ import android.widget.TextView;
 import com.eastflag.loltravel.R;
 import com.eastflag.loltravel.dto.MyTravel;
 
-public class LocationHistoryAdapter extends BaseAdapter {
+public class TravelHistoryAdapter extends BaseAdapter {
 	private Context mContext;
 	private ArrayList<MyTravel> mTravelList;
 	
-	public LocationHistoryAdapter(Context context, ArrayList<MyTravel> travelList) {
+	public TravelHistoryAdapter(Context context, ArrayList<MyTravel> travelList) {
 		mContext = context;
 		mTravelList = travelList;
 	}

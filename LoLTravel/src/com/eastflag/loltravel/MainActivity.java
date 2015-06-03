@@ -14,7 +14,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -381,7 +383,25 @@ public class MainActivity extends Activity {
 				break;
 				
 			case R.id.btnTrip:
-				mFragment = new TripFragment();
+				//해당 메뉴는 GPS를 켜야만 이용가능하게 한다.
+				LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+				if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+					builder.setTitle("GPS 알람")
+						.setMessage("GPS를 켜야만 해당메뉴를 사용할수 있습니다. GPS를 켜시겠습니까?")
+						.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+								startActivity(intent);
+							}
+						})
+						.setNegativeButton("Cancel", null)
+						.show();
+					return;
+				} else {
+					mFragment = new TripFragment();
+				}
 				break;
 			}
 			
