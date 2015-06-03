@@ -68,7 +68,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 		
 		mLocationRequest = new LocationRequest();
 	    mLocationRequest.setInterval(1000 * 60 * 5); //5분
-	    mLocationRequest.setFastestInterval(1000 * 60 * 1);
+	    mLocationRequest.setFastestInterval(1000 * 60 * 5);
 	    mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
 	    
 		return START_STICKY;
