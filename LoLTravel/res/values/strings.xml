@@ -13,7 +13,6 @@
 		3) Your GPS data</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ok">OK</string>
-    
     <string name="q1">Socioeconomic</string>
     <string name="q11">1. Checck your sex?</string>
     <string name="q11_1">female</string>
@@ -24,7 +23,6 @@
     <string name="q15">5. Do you have a drive license?</string>
     <string name="q15_1">yes</string>
     <string name="q15_2">no</string>
-    
     <string name="q2">Residential Environment</string>
     <string name="q21">1. Satisfaction of Public transport</string>
     <string name="q21_1">1p</string>
@@ -41,7 +39,6 @@
     <string name="q25_3">79.33m2</string>
     <string name="q25_4">105.78m2</string>
     <string name="q25_5">138.84m2</string>
-    
     <string name="q3">Travel mode and Purpose</string>
     <string name="q31">1. Did you use a flight for this trip?</string>
     <string name="q31_1">yes</string>
@@ -61,5 +58,6 @@
     <string name="q33_6">Relaxing</string>
     <string name="q33_7">Entertainment, Hang out</string>
     <string name="q33_8">Etc</string>
+    <string name="title_activity_location_history">LocationHistoryActivity</string>
 
 </resources>

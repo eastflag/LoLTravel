@@ -44,7 +44,10 @@ import com.eastflag.loltravel.utils.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 /**
@@ -91,6 +94,7 @@ public class TripFragment extends Fragment {
 			Log.d("LDK", "loc:" + mLocation.getLatitude() + "," + mLocation.getLongitude());
 			mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13));
+			
 		}
 		
 		getTravelInfo();
@@ -118,6 +122,16 @@ public class TripFragment extends Fragment {
 	private void getTravelInfo() {
 		String travelId = PreferenceUtil.instance(getActivity()).getTravelInfo();
 		if(TextUtils.isEmpty(travelId)) {
+			//기존 여행정보가 없다면 설문조사를 보여주고, 지도상에 origin 아이콘 표시한다.
+			if(mLocation != null) {
+				Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
+		            .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
+		            .title("origin")
+		            .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
+		            .snippet(Utils.getAddress(getActivity(),mLocation.getLatitude(), mLocation.getLongitude())));
+				startMarker.showInfoWindow();
+			}
+			 
 			showSurvery();
 			return;
 		}
@@ -148,6 +162,14 @@ public class TripFragment extends Fragment {
 								btnOrigin.setClickable(false);
 								btnOrigin.setTextColor(Color.GRAY);
 								GetLocation();
+							} else {
+								//출발지가 없다면 지도에 현재위치를 출발지로 설정한다.
+				                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
+				                        .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
+				                        .title("origin")
+				                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
+				                        .snippet(Utils.getAddress(getActivity(), mLocation.getLatitude(), mLocation.getLongitude())));
+				                startMarker.showInfoWindow();
 							}
 						} else {
 							
@@ -297,7 +319,8 @@ public class TripFragment extends Fragment {
 	
 	//Origin 입력 다이얼로그
 	private void showOrigin() {
-		String msg = getMsgOfLocation();
+		String msg = "현재 위치\r\n" +  getMsgOfLocation() + "\r\n\r\n"
+				+ "출발지로 설정하시겠습니까?";
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Origin")
@@ -329,7 +352,7 @@ public class TripFragment extends Fragment {
 		}
 		if(addresses.size()>0) {
 			mAddress = addresses.get(0).getAddressLine(0);
-			msg += "\r\n" + "주소: " + mAddress;
+			msg += "\r\n" + mAddress;
 		} else {
 			mAddress = "";
 		}
@@ -339,7 +362,8 @@ public class TripFragment extends Fragment {
 	
 	//Destination 입력 다이얼로그
 	private void showDestination() {
-		String msg = getMsgOfLocation();
+		String msg = "현재 위치\r\n" +  getMsgOfLocation() + "\r\n\r\n"
+				+ "목적지로 설정하시겠습니까?";
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Destination")
@@ -516,6 +540,7 @@ public class TripFragment extends Fragment {
 								mMyLocationList.add(loc);
 							}
 							
+							//오름차순 정렬
 							Collections.sort(mMyLocationList, new Comparator<MyLocation>() {
 								@Override
 								public int compare(MyLocation lhs,MyLocation rhs) {
@@ -528,11 +553,43 @@ public class TripFragment extends Fragment {
 								Log.d("LDK", locatoin.created + ":" + locatoin.lat + "," + locatoin.lng);
 							}
 							
-							for (int i = 0; i < mMyLocationList.size() - 1; ++i) {
-								mGoogleMap.addPolyline(new PolylineOptions()
-				                        .add(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng),
-				                                new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
-				                        .width(10).color(Color.RED).geodesic(true));
+							//위치가 한개 이하일 경우
+							if(mMyLocationList.size() <= 1) {
+				                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
+				                        .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
+				                        .title("origin")
+				                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
+				                        .snippet(Utils.getAddress(getActivity(), mLocation.getLatitude(), mLocation.getLongitude())));
+				                startMarker.showInfoWindow();
+				            } else {
+							
+								//위치가 2개이상 존재할 경우
+								for (int i = 0; i < mMyLocationList.size() - 1; ++i) {
+									//시작점
+									if(i==0) {
+										Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
+						                        .position(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng))
+						                        .title("origin")
+						                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
+						                        .snippet(Utils.getAddress(getActivity(), mMyLocationList.get(i).lat, mMyLocationList.get(i).lng)));
+						                startMarker.showInfoWindow();
+									}
+			                
+									mGoogleMap.addPolyline(new PolylineOptions()
+					                        .add(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng),
+					                                new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
+					                        .width(10).color(Color.RED).geodesic(true));
+									
+									//끝점
+									if(i==(mMyLocationList.size()-2)) {
+						                Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
+						                        .position(new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
+						                        .title("destination")
+						                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_destination))
+						                        .snippet(Utils.getAddress(getActivity(), mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng)));
+						                endMarker.showInfoWindow();
+						            }
+					            }
 				            }
 						}
 					} catch (JSONException e) {

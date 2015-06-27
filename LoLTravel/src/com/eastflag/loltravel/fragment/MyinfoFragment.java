@@ -23,8 +23,10 @@ import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.R;
 import com.eastflag.loltravel.adapter.TravelHistoryAdapter;
 import com.eastflag.loltravel.dialog.LocationDialogFragment;
+import com.eastflag.loltravel.dto.MyLocation;
 import com.eastflag.loltravel.dto.MyTravel;
 import com.eastflag.loltravel.utils.PreferenceUtil;
+import com.eastflag.loltravel.utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,10 +89,19 @@ public class MyinfoFragment extends Fragment {
 							for(int i=0; i<array.length(); ++i) {
 								MyTravel travel = new MyTravel();
 								travel.travelId = array.getJSONObject(i).getString("_id");
-								travel.created = array.getJSONObject(i).getString("created");
+								travel.created = Utils.getDateFromMongoDate(array.getJSONObject(i).getString("created"));
 								if(array.getJSONObject(i).has("origin") && array.getJSONObject(i).has("destination")) {
-									travel.origin_address = array.getJSONObject(i).getJSONObject("origin").getString("address");
-									travel.destination_address = array.getJSONObject(i).getJSONObject("destination").getString("address");
+									MyLocation origin = new MyLocation();
+									MyLocation destination = new MyLocation();
+									origin.address = array.getJSONObject(i).getJSONObject("origin").getString("address");
+									origin.lat = array.getJSONObject(i).getJSONObject("origin").getDouble("lat");
+									origin.lng = array.getJSONObject(i).getJSONObject("origin").getDouble("lng");
+									destination.address = array.getJSONObject(i).getJSONObject("destination").getString("address");
+									destination.lat = array.getJSONObject(i).getJSONObject("destination").getDouble("lat");
+									destination.lng = array.getJSONObject(i).getJSONObject("destination").getDouble("lng");
+									
+									travel.mOrigin = origin;
+									travel.mDestination = destination;
 									mTravelList.add(travel);
 								}
 							}

@@ -54,8 +54,8 @@ public class TravelHistoryAdapter extends BaseAdapter {
 		}
 
 		holder.tvDate.setText(mTravelList.get(position).created);
-		holder.tvOrigin.setText(mTravelList.get(position).origin_address);
-		holder.tvDestination.setText(mTravelList.get(position).destination_address);
+		holder.tvOrigin.setText(mTravelList.get(position).mOrigin.address);
+		holder.tvDestination.setText(mTravelList.get(position).mDestination.address);
 		
 		return convertView;
 	}

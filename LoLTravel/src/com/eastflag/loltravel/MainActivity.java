@@ -21,6 +21,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -44,6 +48,8 @@ public class MainActivity extends Activity {
 	private SimpleFacebook mSimpleFacebook;
 	
 	private TextView btnLogout, btnName;
+	private ImageView iv_pin;
+	private Button btnSurvey, btnMyInfo, btnTrip, btnRanking;
 	private ProgressDialog mProgressDialog;
 	
 	private String mId, mName, mEmail;
@@ -131,6 +137,11 @@ public class MainActivity extends Activity {
 					.show();
 			}
 		});
+		
+		//main animaition
+		Animation aniBounce = AnimationUtils.loadAnimation(this, R.anim.translate_bounce);
+        iv_pin.startAnimation(aniBounce);
+        iv_pin.startAnimation(aniBounce);
 	}
 	
 	@Override
@@ -190,9 +201,15 @@ public class MainActivity extends Activity {
 		mAq = new AQuery(this);
 		mFm = getFragmentManager();
 		
-		findViewById(R.id.btnSurvey).setOnClickListener(mMenuClick);
-		findViewById(R.id.btnMyInfo).setOnClickListener(mMenuClick);
-		findViewById(R.id.btnTrip).setOnClickListener(mMenuClick);
+		iv_pin = (ImageView) findViewById(R.id.iv_pin);
+		btnSurvey = (Button) findViewById(R.id.btnSurvey);
+		btnMyInfo = (Button) findViewById(R.id.btnMyInfo);
+		btnTrip = (Button) findViewById(R.id.btnTrip);
+		btnRanking = (Button) findViewById(R.id.btnRanking);
+		
+		btnSurvey.setOnClickListener(mMenuClick);
+		btnMyInfo.setOnClickListener(mMenuClick);
+		btnTrip.setOnClickListener(mMenuClick);
 		
 		findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -350,6 +367,18 @@ public class MainActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}*/
+		
+		Animation aniRightToLeft = AnimationUtils.loadAnimation(this, R.anim.right_to_left);
+		btnSurvey.startAnimation(aniRightToLeft);
+		
+		Animation aniRightToLeft2 = AnimationUtils.loadAnimation(this, R.anim.right_to_left_off_250);
+		btnMyInfo.startAnimation(aniRightToLeft2);
+		
+		Animation aniRightToLeft3 = AnimationUtils.loadAnimation(this, R.anim.right_to_left_off_500);
+		btnTrip.startAnimation(aniRightToLeft3);
+		
+		Animation aniRightToLeft4 = AnimationUtils.loadAnimation(this, R.anim.right_to_left_off_750);
+		btnRanking.startAnimation(aniRightToLeft4);
 	}
 	
 	private void refreshLogoutUI() {
@@ -402,6 +431,10 @@ public class MainActivity extends Activity {
 				} else {
 					mFragment = new TripFragment();
 				}
+				break;
+				
+			case R.id.btnRanking:
+				//mFragment = new RankingFragment();
 				break;
 			}
 			
