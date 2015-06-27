@@ -418,7 +418,7 @@ public class MainActivity extends Activity {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 					builder.setTitle("GPS 알람")
 						.setMessage("GPS를 켜야만 해당메뉴를 사용할수 있습니다. GPS를 켜시겠습니까?")
-						.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
