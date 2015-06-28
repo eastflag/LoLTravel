@@ -31,6 +31,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.fragment.MyinfoFragment;
+import com.eastflag.loltravel.fragment.RankingFragment;
 import com.eastflag.loltravel.fragment.SetupFragment;
 import com.eastflag.loltravel.fragment.TripFragment;
 import com.eastflag.loltravel.service.MyLocationService;
@@ -210,6 +211,7 @@ public class MainActivity extends Activity {
 		btnSurvey.setOnClickListener(mMenuClick);
 		btnMyInfo.setOnClickListener(mMenuClick);
 		btnTrip.setOnClickListener(mMenuClick);
+		btnRanking.setOnClickListener(mMenuClick);
 		
 		findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -411,6 +413,10 @@ public class MainActivity extends Activity {
 				mFragment = new MyinfoFragment();
 				break;
 				
+			case R.id.btnRanking:
+				mFragment = new RankingFragment();
+				break;
+				
 			case R.id.btnTrip:
 				//해당 메뉴는 GPS를 켜야만 이용가능하게 한다.
 				LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -433,9 +439,6 @@ public class MainActivity extends Activity {
 				}
 				break;
 				
-			case R.id.btnRanking:
-				//mFragment = new RankingFragment();
-				break;
 			}
 			
 			showSubmenu();
