@@ -578,7 +578,7 @@ public class TripFragment extends Fragment {
 									mGoogleMap.addPolyline(new PolylineOptions()
 					                        .add(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng),
 					                                new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
-					                        .width(10).color(Color.RED).geodesic(true));
+					                        .width(18).color(Color.RED).geodesic(true));
 									
 									//끝점
 									if(i==(mMyLocationList.size()-2)) {

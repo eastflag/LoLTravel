@@ -276,8 +276,10 @@ public class MainActivity extends Activity {
 				mId = response.getId();
 				mEmail = response.getEmail();
 				
-				//이메일 저장
+				//이메일, 이름, 아이디 저장
 				PreferenceUtil.instance(MainActivity.this).setEmail(mEmail);
+				PreferenceUtil.instance(MainActivity.this).setName(mName);
+				PreferenceUtil.instance(MainActivity.this).setFacebookId(mId);
 				
 				Log.d("LDK", String.format("name:%s, id:%s, email:%s", mName, mId, mEmail));
 				refreshLoggedUI();

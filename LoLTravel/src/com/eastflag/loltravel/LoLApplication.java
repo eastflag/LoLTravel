@@ -21,6 +21,9 @@ public class LoLApplication extends Application {
 	public static final String API_LOCATION_GET = "/api/lol/location/get";
 	public static final String API_TRAVEL_GETLIST = "/api/lol/travel/getlist";
 	public static final String API_LOCATION_GETLIST = "/api/lol/location/getlist";
+	public static final String API_POINT_GETMYPOINT = "/api/lol/point/getMyPoint";
+	public static final String API_POINT_GETRANKINGLIST = "/api/lol/point/getRankingList";
+	
 	
 	private static final String APP_ID = "919687801386078";
 	private static final String APP_SECRET_KEY = "35b05ca2fedf4f1d7329e7393b13025f";

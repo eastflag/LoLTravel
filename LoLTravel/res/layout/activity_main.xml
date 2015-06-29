@@ -66,23 +66,23 @@
 	            android:layout_width="match_parent" android:layout_height="wrap_content"
 	            android:text="Socioeconomic &amp; Residential Environment" />
 	        <Button
-	            android:id="@+id/btnMyInfo"
-	            style="@style/Button_small_black"
-	            android:layout_width="match_parent" android:layout_height="wrap_content"
-	            android:layout_marginTop="20dp"
-	            android:text="Travel History" />
-	        <Button
 	            android:id="@+id/btnTrip"
 	            style="@style/Button_small_black"
 	            android:layout_width="match_parent" android:layout_height="wrap_content"
 	            android:layout_marginTop="20dp"
 	            android:text="New Trip" />
 	        <Button
+	            android:id="@+id/btnMyInfo"
+	            style="@style/Button_small_black"
+	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:layout_marginTop="20dp"
+	            android:text="Travel History" />
+	        <Button
 	            android:id="@+id/btnRanking"
 	            style="@style/Button_small_black"
 	            android:layout_width="match_parent" android:layout_height="wrap_content"
 	            android:layout_marginTop="20dp"
-	            android:text="Ranking" />
+	            android:text="Point Ranking" />
 	    </LinearLayout>
 
     </LinearLayout>

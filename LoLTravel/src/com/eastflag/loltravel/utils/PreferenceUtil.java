@@ -22,6 +22,22 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	public String getEmail() {
 		return get("email");
 	}
+	
+	public void setName(String name) {
+		put("name", name);
+	}
+	
+	public String getName() {
+		return get("name");
+	}
+	
+	public void setFacebookId(String id) {
+		put("facebook_id", id);
+	}
+	
+	public String getFacebookId() {
+		return get("facebook_id");
+	}
 
 	public void setToken(String token) {
 		put("token", token);

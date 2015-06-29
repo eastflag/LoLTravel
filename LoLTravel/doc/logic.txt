@@ -211,3 +211,23 @@ url:http://www.javabrain.kr:4000/api/lol/location/getlist-----------------------
    "lat": 37.527255,
    "lng": 126.8963302,
    "address": "한국 서울특별시 영?
+
+}
+
+   
+   //랭킹정보 가져오기
+   http://www.javabrain.kr:4000/api/lol/point/getRankingList--------------------------------------------------------------
+   {
+    "result": 0,
+    "data": [{
+        "_id": {
+            "_id": "eastflag@gmail.com",
+            "__v": 0,
+            "created": "2015-04-29T16:23:58.842Z",
+            "facebook": {
+                "id": "876255869108306",
+                "name": "DongKee Lee"
+            }
+        },
+        "count": 34
+    }]
