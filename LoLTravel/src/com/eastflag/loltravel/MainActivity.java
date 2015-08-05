@@ -103,9 +103,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-				builder.setTitle("LoLTravel")
-					.setMessage("로그아웃하시겠습니까?")
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				builder.setTitle(getString(R.string.main_title))
+					.setMessage(getString(R.string.logout))
+					.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int arg1) {
 							dialog.dismiss();
@@ -129,7 +129,7 @@ public class MainActivity extends Activity {
 							});
 						}
 					})
-					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							dialog.dismiss();
@@ -175,16 +175,16 @@ public class MainActivity extends Activity {
 	public void onBackPressed() {
 		if(mFragment == null) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("LoLTravel")
-				.setMessage("종료하시겠습니까?")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			builder.setTitle(getString(R.string.main_title))
+				.setMessage(getString(R.string.logout))
+				.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int arg1) {
 						dialog.dismiss();
 						finish();
 					}
 				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
@@ -254,8 +254,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onThinking() {
 				mProgressDialog = new ProgressDialog(MainActivity.this);
-				mProgressDialog.setTitle("Wait");
-				mProgressDialog.setMessage("Getting the facebook info...");
+				mProgressDialog.setTitle(getString(R.string.facebook_title));
+				mProgressDialog.setMessage(getString(R.string.facebook_message));
 				mProgressDialog.show();
 			}
 
@@ -306,9 +306,9 @@ public class MainActivity extends Activity {
 						//데이터 존재하지 않음
 						if(object.getInt("result") == 100) {
 							AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-							builder.setTitle("LoLTravel")
-								.setMessage("Socioeconomic and Residential environment do not exist. Please create a survey")
-								.setPositiveButton("Go to survey", new DialogInterface.OnClickListener() {
+							builder.setTitle(getString(R.string.main_title))
+								.setMessage(getString(R.string.title_not_exist_survey))
+								.setPositiveButton(getString(R.string.ok_not_exist_survey), new DialogInterface.OnClickListener() {
 								    @Override
 								    public void onClick(DialogInterface dialog, int which) {
 								    	mFragment = new SetupFragment();
@@ -424,16 +424,16 @@ public class MainActivity extends Activity {
 				LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 				if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-					builder.setTitle("GPS 알람")
-						.setMessage("GPS를 켜야만 해당메뉴를 사용할수 있습니다. GPS를 켜시겠습니까?")
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					builder.setTitle(getString(R.string.gps_title))
+						.setMessage(getString(R.string.gps_message))
+						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 								startActivity(intent);
 							}
 						})
-						.setNegativeButton("Cancel", null)
+						.setNegativeButton(getString(R.string.cancel), null)
 						.show();
 					return;
 				} else {

@@ -60,8 +60,8 @@ public class LocationDialogFragment extends DialogFragment {
 		mAq = new AQuery(mView);
 		
 		String title = mTravel.created + "\r\n" 
-				+ "출발:" + mTravel.mOrigin.address + "\r\n"
-				+ "도착:" + mTravel.mDestination.address;
+				+ getString(R.string.origin) + ":" + mTravel.mOrigin.address + "\r\n"
+				+ getString(R.string.destination) + ":" + mTravel.mDestination.address;
 		tv_history_title.setText(title);
 		
 		//mListView = (ListView) mView.findViewById(R.id.lvLocation);
@@ -77,8 +77,8 @@ public class LocationDialogFragment extends DialogFragment {
 		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-	        .setTitle("Travel History")
-	        .setPositiveButton("Close",
+	        .setTitle(getString(R.string.history_title))
+	        .setPositiveButton(getString(R.string.close),
 	            new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int whichButton) {
 	                }
@@ -153,7 +153,7 @@ public class LocationDialogFragment extends DialogFragment {
 								if(i==0) {
 									Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
 					                        .position(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng))
-					                        .title("origin")
+					                        .title(getString(R.string.origin))
 					                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
 					                        .snippet(Utils.getAddress(getActivity(), mMyLocationList.get(i).lat, mMyLocationList.get(i).lng)));
 					                startMarker.showInfoWindow();
@@ -168,7 +168,7 @@ public class LocationDialogFragment extends DialogFragment {
 								if(i==(mMyLocationList.size()-2)) {
 					                Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
 					                        .position(new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
-					                        .title("destination")
+					                        .title(getString(R.string.destination))
 					                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_destination))
 					                        .snippet(Utils.getAddress(getActivity(), mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng)));
 					                endMarker.showInfoWindow();

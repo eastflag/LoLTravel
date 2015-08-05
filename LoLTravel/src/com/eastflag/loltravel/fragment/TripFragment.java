@@ -126,7 +126,7 @@ public class TripFragment extends Fragment {
 			if(mLocation != null) {
 				Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
 		            .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
-		            .title("origin")
+		            .title(getString(R.string.origin))
 		            .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
 		            .snippet(Utils.getAddress(getActivity(),mLocation.getLatitude(), mLocation.getLongitude())));
 				startMarker.showInfoWindow();
@@ -166,7 +166,7 @@ public class TripFragment extends Fragment {
 								//출발지가 없다면 지도에 현재위치를 출발지로 설정한다.
 				                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
 				                        .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
-				                        .title("origin")
+				                        .title(getString(R.string.origin))
 				                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
 				                        .snippet(Utils.getAddress(getActivity(), mLocation.getLatitude(), mLocation.getLongitude())));
 				                startMarker.showInfoWindow();
@@ -265,15 +265,15 @@ public class TripFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if(a31 == 0) {
-					Utils.showToast(getActivity(), "Check if you use flight for this trip");
+					Utils.showToast(getActivity(), getString(R.string.check_31));
 					return;
 				}
 				if(a32 == 0) {
-					Utils.showToast(getActivity(), "Check what is your travel mode for this trip");
+					Utils.showToast(getActivity(), getString(R.string.check_32));
 					return;
 				}
 				if(a33 == 0) {
-					Utils.showToast(getActivity(), "Check what is your purpose for this trip");
+					Utils.showToast(getActivity(), getString(R.string.check_33));
 					return;
 				}
 				
@@ -311,7 +311,7 @@ public class TripFragment extends Fragment {
 		}
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Travel Infomation")
+		builder.setTitle(getString(R.string.information_title))
 			.setView(view);
 		mDialog = builder.create();
 		mDialog.show();
@@ -319,26 +319,26 @@ public class TripFragment extends Fragment {
 	
 	//Origin 입력 다이얼로그
 	private void showOrigin() {
-		String msg = "현재 위치\r\n" +  getMsgOfLocation() + "\r\n\r\n"
-				+ "출발지로 설정하시겠습니까?";
+		String msg = getString(R.string.current_location) + "\r\n" +  getMsgOfLocation() + "\r\n\r\n"
+				+ getString(R.string.set_origin);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Origin")
+		builder.setTitle(getString(R.string.origin))
 			.setMessage(msg)
-			.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+			.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					//서버에 origin 정보 저장후 지속적인 트래킹
 					postOrigin();
 				}
 			})
-			.setNegativeButton("Cancel", null)
+			.setNegativeButton(getString(R.string.cancel), null)
 			.show();
 	}
 
 	private String getMsgOfLocation() {
-		String msg = "Latitude: "+ mLocation.getLatitude() + "\r\n"
-				+ "Longitude: " +mLocation.getLongitude();
+		String msg = getString(R.string.latitude) + ": "+ mLocation.getLatitude() + "\r\n"
+				+ getString(R.string.longitude) + ": " +mLocation.getLongitude();
 		Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
 		List<Address> addresses = null;
 		try {
@@ -362,20 +362,20 @@ public class TripFragment extends Fragment {
 	
 	//Destination 입력 다이얼로그
 	private void showDestination() {
-		String msg = "현재 위치\r\n" +  getMsgOfLocation() + "\r\n\r\n"
-				+ "목적지로 설정하시겠습니까?";
+		String msg = getString(R.string.current_location) + "\r\n" +  getMsgOfLocation() + "\r\n\r\n"
+				+ getString(R.string.set_destination);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Destination")
+		builder.setTitle(getString(R.string.destination))
 			.setMessage(msg)
-			.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+			.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					//서버에 origin 정보 저장후 지속적인 트래킹
 					postDestination();
 				}
 			})
-			.setNegativeButton("Cancel", null)
+			.setNegativeButton(getString(R.string.cancel), null)
 			.show();
 	}
 	
@@ -406,7 +406,7 @@ public class TripFragment extends Fragment {
 							Log.d("LDK", "result:" + object.toString(1));
 							
 							mDialog.dismiss();
-							Utils.showToast(getActivity(), "저장하였습니다");
+							Utils.showToast(getActivity(), getString(R.string.toast_success));
 							//new trip 정보 저장
 							String _id = object.getJSONObject("data").getString("_id");
 							PreferenceUtil.instance(getActivity()).setTravelInfo(_id);
@@ -449,7 +449,7 @@ public class TripFragment extends Fragment {
 						if(object.getInt("result") == 0) {
 							Log.d("LDK", "result:" + object.toString(1));
 							
-							Utils.showToast(getActivity(), "저장하였습니다");
+							Utils.showToast(getActivity(), getString(R.string.toast_success));
 							//출발지를 입력한 시간 저장
 							PreferenceUtil.instance(getActivity()).setOrigin(DateFormat.getTimeInstance().format(new Date()));
 							//출발지 입력 금지
@@ -494,7 +494,7 @@ public class TripFragment extends Fragment {
 						if(object.getInt("result") == 0) {
 							Log.d("LDK", "result:" + object.toString(1));
 							
-							Utils.showToast(getActivity(), "저장하였습니다");
+							Utils.showToast(getActivity(), getString(R.string.toast_success));
 							//여행정보와 출발지 시간을 pref에서 제거
 							PreferenceUtil.instance(getActivity()).setTravelInfo("");
 							PreferenceUtil.instance(getActivity()).setOrigin("");
@@ -557,7 +557,7 @@ public class TripFragment extends Fragment {
 							if(mMyLocationList.size() <= 1) {
 				                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
 				                        .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
-				                        .title("origin")
+				                        .title(getString(R.string.origin))
 				                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
 				                        .snippet(Utils.getAddress(getActivity(), mLocation.getLatitude(), mLocation.getLongitude())));
 				                startMarker.showInfoWindow();
@@ -569,7 +569,7 @@ public class TripFragment extends Fragment {
 									if(i==0) {
 										Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
 						                        .position(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng))
-						                        .title("origin")
+						                        .title(getString(R.string.origin))
 						                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
 						                        .snippet(Utils.getAddress(getActivity(), mMyLocationList.get(i).lat, mMyLocationList.get(i).lng)));
 						                startMarker.showInfoWindow();
@@ -584,7 +584,7 @@ public class TripFragment extends Fragment {
 									if(i==(mMyLocationList.size()-2)) {
 						                Marker endMarker = mGoogleMap.addMarker(new MarkerOptions()
 						                        .position(new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
-						                        .title("destination")
+						                        .title(getString(R.string.destination))
 						                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_destination))
 						                        .snippet(Utils.getAddress(getActivity(), mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng)));
 						                endMarker.showInfoWindow();

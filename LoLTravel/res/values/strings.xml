@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name="app_id">919687801386078</string>
+	
     <string name="app_name">LoLTravel</string>
-    <string name="app_id">919687801386078</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="main_title">LoLTravel</string>
-    <string name="main_content">        This application is to collect your leisure trips. \n
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Do you want to finish?</string>   
+    <string name="facebook_title">Wait</string> 
+    <string name="facebook_message">Getting the facebook info...</string> 
+    <string name="title_not_exist_survey">Socioeconomic and Residential environment do not exist. Please create a survey</string>
+    <string name="ok_not_exist_survey">Go to survey</string>
+    <string name="gps_title">GPS Alert</string>
+    <string name="gps_message">You have to turn on the GPS to go to menu. Do you want to turn on the GPS?</string>
+    <string name="origin">Origin</string>
+    <string name="destination">Destination</string>
+    <string name="history_title">Travel History</string>
+    <string name="information_title">Travel Information</string>
+    <string name="close">Close</string>
+    <string name="current_location">Current Location</string>
+    <string name="set_origin">Do you want to set as a origin point</string>
+    <string name="set_destination">Do you want to set as a destination point</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+    <string name="toast_success">saved successfully</string>
+    
+    <string name="main_content">This application is to collect your leisure trips. \n
 		Allow this application to:\n
 		1) Your personal information\n
 		2) Your accountants as SNS\n
 		3) Your GPS data</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="ok">OK</string>
     <string name="q1">Socioeconomic</string>
     <string name="q11">1. Checck your sex?</string>
     <string name="q11_1">female</string>
@@ -58,6 +75,8 @@
     <string name="q33_6">Relaxing</string>
     <string name="q33_7">Entertainment, Hang out</string>
     <string name="q33_8">Etc</string>
-    <string name="title_activity_location_history">LocationHistoryActivity</string>
 
+    <string name="check_31">Check if you use flight for this trip</string>
+    <string name="check_32">Check what is your travel mode for this trip</string>
+    <string name="check_33">Check what is your purpose for this trip</string>
 </resources>
