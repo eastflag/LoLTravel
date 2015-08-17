@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_id">919687801386078</string>
+	
+    <string name="app_name">LoLTravel</string>
+    <string name="main_title">LoLTravel</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout"> 終わりますか？</string>   
+    <string name="facebook_title">Wait</string> 
+    <string name="facebook_message"> Facebookの情報を取得する...</string> 
+ 	<string name="title_not_exist_survey">社会経済および住宅環境は存在しません。
+アンケートを作成してください </string>
+    <string name="ok_not_exist_survey"> 調査に行きます </string>
+    <string name="gps_title"> GPSアラート </string>
+    <string name="gps_message"> メニューに移動するためにGPSをオンにする必要があります. GPSをオンにしますか？ </string>
+    <string name="origin">出発地 </string>
+    <string name="destination"> 目的地 </string>
+    <string name="history_title"> 通行履歴 </string>
+    <string name="information_title">通行情報 </string>
+    <string name="close">終了</string>
+    <string name="current_location">現在位置 </string>
+    <string name="set_origin"> 出発地 として設定しますか </string>
+    <string name="set_destination"> 目的地 として設定しますか </string>
+    <string name="latitude">緯度 </string>
+    <string name="longitude"> 経度 </string>
+    <string name="toast_success">正常に保存 </string>
+    
+    <string name="main_content">
+このアプリケーションは、あなたの レジャー通行を収集することです。\n
+		このアプリケーションシートは、情報を収集することを許可します:\n
+		1) あなたの個人情報 \n
+		2) あなたのSNSアカウント \n
+		3) 位置情報 </string>
+    <string name="q1"> 社会経済的特性 </string>
+    <string name="q11">1. 性別は? </string>
+    <string name="q11_1">女性 </string>
+    <string name="q11_2"> 男性 </string>
+    <string name="q12">2. 年齢は?</string>
+    <string name="q13">3. あなたの平均所得 </string>
+    <string name="q14">4. あなたの 住所? </string>
+    <string name="q15">5. ドライブのライセンスを持っていますか？</string>
+    <string name="q15_1">yes</string>
+    <string name="q15_2">no</string>
+    <string name="q2"> 居住環境 </string>
+    <string name="q21">1. 公共交通の満足度 </string>
+    <string name="q21_1">1p</string>
+    <string name="q21_2">2p</string>
+    <string name="q21_3">3p</string>
+    <string name="q21_4">4p</string>
+    <string name="q21_5">5p</string>
+    <string name="q22">2. 商業施設の満足度 </string>
+    <string name="q23">3. レジャー施設の満足度 </string>
+    <string name="q24">4. 緑地の満足度</string>
+    <string name="q25">5. あなたの居住面積は?</string>
+    <string name="q25_1">49.58m2</string>
+    <string name="q25_2">59.5m2</string>
+    <string name="q25_3">79.33m2</string>
+    <string name="q25_4">105.78m2</string>
+    <string name="q25_5">138.84m2</string>
+    <string name="q3"> 通行手段と目的 </string>
+    <string name="q31">1. 航空便を利用しました?</string>
+    <string name="q31_1">yes</string>
+    <string name="q31_2">no</string>
+    <string name="q32">2. 通行手段は何ですか </string>
+    <string name="q32_1"> 徒歩、自転車 </string>
+    <string name="q32_2"> 自動車 </string>
+    <string name="q32_3"> 公共交通 </string>
+    <string name="q32_4"> タクシー </string>
+    <string name="q32_5"> その他 </string>
+    <string name="q33">3. 通行目的は何ですか?</string>
+    <string name="q33_1">ショッピング </string>
+    <string name="q33_2">映画、パフォーマンス </string>
+    <string name="q33_3"> 行楽 </string>
+    <string name="q33_4"> 趣味、スポーツ </string>
+    <string name="q33_5"> グリーン、エコツアー </string>
+    <string name="q33_6"> リラックス </string>
+    <string name="q33_7"> エンターテイメント, 集まり </string>
+    <string name="q33_8">その他 </string>
+
+    <string name="check_31"> 空券を使用するか確認してください </string>
+    <string name="check_32"> 交通手段が何なのか確認してください </string>
+    <string name="check_33"> 通行目的が何なのか確認してください </string>
+</resources>

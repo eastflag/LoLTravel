@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_id">919687801386078</string>
+	
+    <string name="app_name">LoLTravel</string>
+    <string name="main_title">LoLTravel</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">종료할까요?</string>   
+    <string name="facebook_title">Wait</string> 
+    <string name="facebook_message">정보 얻는 중</string> 
+    <string name="title_not_exist_survey">사회경제특성, 거주환경정보가 존재하지 않습니다. 설문에 응해주세요. </string>
+    <string name="ok_not_exist_survey">설문참여</string>
+    <string name="gps_title">GPS 알림</string>
+    <string name="gps_message">GPS를 설정해야 합니다. GPS를 켜시겠습니까?</string>
+    <string name="origin">출발지</string>
+    <string name="destination">목적지</string>
+    <string name="history_title">통행기록</string>
+    <string name="information_title">통행정보</string>
+    <string name="close">종료</string>
+    <string name="current_location">현재위치</string>
+    <string name="set_origin">출발지로 지정하시겠습니까?</string>
+    <string name="set_destination">목적지로 지정하시겠습니까?</string>
+    <string name="latitude">위도</string>
+    <string name="longitude">경도</string>
+    <string name="toast_success">저장성공</string>
+    
+    <string name="main_content">본 어플은 여가통행자료를 수집하기 위한 것입니다.\n
+		이 어플은 다음을 동의합니다:\n
+		1) 개인적인 사항\n
+		2) SNS계정\n
+		3) 위치정보</string>
+    <string name="q1">사회경제적 특성</string>
+    <string name="q11">1. 성별은?</string>
+    <string name="q11_1">여</string>
+    <string name="q11_2">남</string>
+    <string name="q12">2. 연령은?</string>
+    <string name="q13">3. 월 평균소득</string>
+    <string name="q14">4. 주소</string>
+    <string name="q15">5. 운전면허를 소지하고 있습니까?</string>
+    <string name="q15_1">네</string>
+    <string name="q15_2">아니오</string>
+    <string name="q2">거주환경</string>
+    <string name="q21">1. 대중교통만족도</string>
+    <string name="q21_1">1p</string>
+    <string name="q21_2">2p</string>
+    <string name="q21_3">3p</string>
+    <string name="q21_4">4p</string>
+    <string name="q21_5">5p</string>
+    <string name="q22">2. 상업시설만족도</string>
+    <string name="q23">3. 여가환경만족도</string>
+    <string name="q24">4. 녹지만족도</string>
+    <string name="q25">5. 거주하는 주거면적은?</string>
+    <string name="q25_1">49.58m2</string>
+    <string name="q25_2">59.5m2</string>
+    <string name="q25_3">79.33m2</string>
+    <string name="q25_4">105.78m2</string>
+    <string name="q25_5">138.84m2</string>
+    <string name="q3">통행수단과 통행목적</string>
+    <string name="q31">1. 항공편을 이용하였습니까?</string>
+    <string name="q31_1">예</string>
+    <string name="q31_2">아니오</string>
+    <string name="q32">2. 이 통행의 교통수단은?</string>
+    <string name="q32_1">도보 또는 자전거</string>
+    <string name="q32_2">자동차</string>
+    <string name="q32_3">대중교통</string>
+    <string name="q32_4">택시</string>
+    <string name="q32_5">기타</string>
+    <string name="q33">3. 통행목적은 무엇입니까?</string>
+    <string name="q33_1">쇼핑</string>
+    <string name="q33_2">영화나 공연</string>
+    <string name="q33_3">행락</string>
+    <string name="q33_4">취미나 스포츠 활동</string>
+    <string name="q33_5">자연, 에코투어</string>
+    <string name="q33_6">휴양 및 휴식</string>
+    <string name="q33_7">오락 및 여흥, 모임 </string>
+    <string name="q33_8">기타</string>
+
+    <string name="check_31">항공편 이용여부를 체크하세요</string>
+    <string name="check_32">통행수단이 무엇인지 체크하세요</string>
+    <string name="check_33">통행목적이 무엇인지 체크하세요</string>
+</resources>

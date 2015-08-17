@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_id">919687801386078</string>
+	
+    <string name="app_name">LoLTravel</string>
+    <string name="main_title">LoLTravel</string>
+    <string name="ok"> 确定 </string>
+    <string name="cancel"> 取消 </string>
+    <string name="logout"> 确定退出？</string>   
+    <string name="facebook_title"> 请稍等</string> 
+    <string name="facebook_message"> 获取Facebook信息 </string> 
+    <string name="title_not_exist_survey"> 不存在社会经济和居住环境属性，请创建一个。</string>
+<string name="ok_not_exist_survey"> 去调查 </string>
+    <string name="gps_title"> GPS提示 </string>
+    <string name="gps_message"> 您需要启动GPS到菜单。确定要启动GPS？</string>
+    <string name="origin"> 原点 </string>
+    <string name="destination"> 目的地 </string>
+    <string name="history_title"> 行程记录</string>
+    <string name="information_title"> 行程信息 </string>
+    <string name="close"> 关闭 </string>
+    <string name="current_location"> 当前位置</string>
+    <string name="set_origin"> 是否要设为原点</string>
+    <string name="set_destination"> 是否要设为终点</string>
+    <string name="latitude"> 维度 </string>
+    <string name="longitude"> 经度 </string>
+    <string name="toast_success"> 保存成功 </string>
+    
+    <string name="main_content">. 此应用将会收集您的休闲旅游信息 . \n
+		允许此应用:\n
+		1) 您的个人信息 \n
+		2) 您的SNS账号 \n
+		3) 您的GPS数据 </string>
+    <string name="q1"> 社会经济特征 </string>
+    <string name="q11">1. 确认您的性别 </string>
+    <string name="q11_1"> 女 </string>
+    <string name="q11_2"> 男 </string>
+    <string name="q12">2. 年龄 </string>
+    <string name="q13">3. 平均收入 </string>
+    <string name="q14">4. 住址 </string>
+    <string name="q15">5. 您是否有驾照?</string>
+    <string name="q15_1"> 是 </string>
+    <string name="q15_2"> 否 </string>
+    <string name="q2"> 居住环境 </string>
+    <string name="q21">1. 对公共交通的满意度 </string>
+    <string name="q21_1">1p</string>
+    <string name="q21_2">2p</string>
+    <string name="q21_3">3p</string>
+    <string name="q21_4">4p</string>
+    <string name="q21_5">5p</string>
+    <string name="q22">2. 对商业设施的满意度 </string>
+    <string name="q23">3. 对休闲设施的满意度 </string>
+    <string name="q24">4. 对绿地的满意度 </string>
+    <string name="q25">5. 您的住宅面积?</string>
+    <string name="q25_1">49.58m2</string>
+    <string name="q25_2">59.5m2</string>
+    <string name="q25_3">79.33m2</string>
+    <string name="q25_4">105.78m2</string>
+    <string name="q25_5">138.84m2</string>
+    <string name="q3"> 行程模式和目的 </string>
+    <string name="q31">1. 本次旅行中是否乘坐过飞机?</string>
+    <string name="q31_1">yes</string>
+    <string name="q31_2">no</string>
+    <string name="q32">2. 在本次旅行中您的行程模式是什么？</string>
+    <string name="q32_1"> 步行， 自行车</string>
+ <string name="q32_2"> 汽车 </string>
+    <string name="q32_3"> 公共交通 </string>
+    <string name="q32_4"> 出租车 </string>
+    <string name="q32_5">其他 </string>
+    <string name="q33">3. 本次旅行的目的是什么？</string>
+    <string name="q33_1"> 购物 </string>
+    <string name="q33_2"> 电影，演出</string>
+    <string name="q33_3"> 休闲 </string>
+    <string name="q33_4"> 兴趣，体育 </string>
+    <string name="q33_5"> 绿色，生态旅游 </string>
+    <string name="q33_6"> 放松 </string>
+    <string name="q33_7"> 娱乐，闲逛 </string>
+    <string name="q33_8"> 其他 </string>
+
+    <string name="check_31"> 请确认在本次旅行中是否乘坐过飞机</string>
+    <string name="check_32"> 请确认在本次旅游中的行程模式 </string>
+    <string name="check_33"> 请确认本次旅行的目的 </string>
+</resources>
