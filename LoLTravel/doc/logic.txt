@@ -1,4 +1,36 @@
-* schema
+release key hash key
+keytool -exportcert -alias loltravel -keystore "loltravel.key" | openssl sha1 -binary |openssl base64
+GT8A------------
+
+debug key has key
+keytool -exportcert -alias androiddebugkey -keystore "C:\Users\eastflag\.android\debug.keystore" | openssl sha1 -binary| openssl base64
+
+
+* 안드로이드
+repository
+=> https://github.com/eastflag/LoLTravel.git
+
+*페이스북 API
+3.22 적용
+simple facebook API로 wrapping
+https://github.com/sromku/android-simple-facebook.git
+
+
+* 서버 구성
+MEAN stack
+node.js로 REST API 개발
+빅데이터 처리를 위한 MongoDB noSQL 사용
+ORM으로 Mongoose 사용
+
+signing key
+password: loltravel
+alias : loltravel
+alias password : loltravel
+
+
+
+
+* schema----------------------------------------
 user - survey
      - travel - location
 
