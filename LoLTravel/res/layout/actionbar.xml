@@ -9,7 +9,7 @@
         android:layout_width="30dp" android:layout_height="30dp"
         android:layout_alignParentLeft="true" android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/menu" />
+        android:src="@drawable/launcher" />
 
 	<TextView 
 	    android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -18,6 +18,7 @@
 	    android:text="@string/app_name" android:textSize="24sp" android:textStyle="bold"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/btnLogout"
         style="@style/Button_small_black"
         android:layout_width="60dp" android:layout_height="35dp"
@@ -28,9 +29,8 @@
     <TextView
         android:id="@+id/btnName"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/btnLogout"
-        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:text="DongKee"/>
+        android:text=""/>
 
 </RelativeLayout>

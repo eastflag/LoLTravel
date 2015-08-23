@@ -30,13 +30,18 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
+import com.eastflag.loltravel.dialog.LoadingDialog;
+import com.eastflag.loltravel.dialog.LoginDialog;
+import com.eastflag.loltravel.dto.MyInfoVO;
 import com.eastflag.loltravel.fragment.MyinfoFragment;
 import com.eastflag.loltravel.fragment.RankingFragment;
 import com.eastflag.loltravel.fragment.SetupFragment;
 import com.eastflag.loltravel.fragment.TripFragment;
+import com.eastflag.loltravel.listener.LoginListener;
 import com.eastflag.loltravel.service.MyLocationService;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.eastflag.loltravel.utils.SharedObjects;
+import com.eastflag.loltravel.utils.Utils;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Profile;
@@ -54,6 +59,8 @@ public class MainActivity extends Activity {
 	private ProgressDialog mProgressDialog;
 	
 	private String mId, mName, mEmail;
+	
+	private LoginDialog mLoginDialog;
 	
 	private FragmentManager mFm;
 	private Fragment mFragment;
@@ -94,12 +101,12 @@ public class MainActivity extends Activity {
 		View mCustomView = View.inflate(this, R.layout.actionbar, null);
 		btnLogout = (TextView) mCustomView.findViewById(R.id.btnLogout);
 		btnName = (TextView) mCustomView.findViewById(R.id.btnName);
-		btnLogout.setVisibility(View.INVISIBLE);
-		btnName.setVisibility(View.INVISIBLE);
+		//btnLogout.setVisibility(View.INVISIBLE);
+		//btnName.setVisibility(View.INVISIBLE);
 		mActionBar.setCustomView(mCustomView);
 		mActionBar.setDisplayShowCustomEnabled(true);
 		
-		btnLogout.setOnClickListener(new View.OnClickListener() {
+		/*btnLogout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -137,12 +144,14 @@ public class MainActivity extends Activity {
 					})
 					.show();
 			}
-		});
+		});*/
+		
+		checkLogin();
 		
 		//main animaition
-		Animation aniBounce = AnimationUtils.loadAnimation(this, R.anim.translate_bounce);
-        iv_pin.startAnimation(aniBounce);
-        iv_pin.startAnimation(aniBounce);
+		//Animation aniBounce = AnimationUtils.loadAnimation(this, R.anim.translate_bounce);
+        //iv_pin.startAnimation(aniBounce);
+        //iv_pin.startAnimation(aniBounce);
 	}
 	
 	@Override
@@ -245,8 +254,26 @@ public class MainActivity extends Activity {
 				});
 			}
 		});
+	}
+	
+	private void checkLogin() {
+		String mdn = PreferenceUtil.instance(this).getMdn();
 		
-
+		if(TextUtils.isEmpty(mdn)) {
+			showLoginDialog();
+		} else {
+			checkSurveyExist();
+		}
+	}
+	
+	private void showLoginDialog(){
+		if(mLoginDialog == null){
+			mLoginDialog = new LoginDialog(this, mLoginListener);
+		}
+		
+		if(mLoginDialog.isShowing() == false){
+			mLoginDialog.show();
+		}
 	}
 	
 	private void getProfile() {
@@ -277,7 +304,7 @@ public class MainActivity extends Activity {
 				mEmail = response.getEmail();
 				
 				//이메일, 이름, 아이디 저장
-				PreferenceUtil.instance(MainActivity.this).setEmail(mEmail);
+				PreferenceUtil.instance(MainActivity.this).setMdn(mEmail);
 				PreferenceUtil.instance(MainActivity.this).setName(mName);
 				PreferenceUtil.instance(MainActivity.this).setFacebookId(mId);
 				
@@ -290,11 +317,13 @@ public class MainActivity extends Activity {
 	}
 	
 	private void checkSurveyExist() {
+		btnName.setText(PreferenceUtil.instance(MainActivity.this).getName());
+		
 		String url = LoLApplication.HOST + LoLApplication.API_SURVEY_GET;
 		JSONObject json = new JSONObject();
 
 		try {
-			json.put("id", PreferenceUtil.instance(this).getEmail());
+			json.put("id", Utils.getMdn(MainActivity.this));
 			
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", json.toString(1));
@@ -302,7 +331,7 @@ public class MainActivity extends Activity {
 			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
 				@Override
 				public void callback(String url, JSONObject object, AjaxStatus status) {
-					try {
+					try {	
 						//데이터 존재하지 않음
 						if(object.getInt("result") == 100) {
 							AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -315,7 +344,6 @@ public class MainActivity extends Activity {
 								    	showSubmenu();
 								    	
 								    	dialog.dismiss();
-								    	
 								    }
 								})
 								.setCancelable(false)
@@ -444,6 +472,47 @@ public class MainActivity extends Activity {
 			}
 			
 			showSubmenu();
+		}
+	};
+	
+	LoginListener mLoginListener = new LoginListener() {
+		@Override
+		public void onLogin(MyInfoVO myInfo) {
+			LoadingDialog.showLoading(MainActivity.this);
+			String url = LoLApplication.HOST + LoLApplication.API_USER_ADD;
+			JSONObject json = new JSONObject();
+
+			try {
+				json.put("id", Utils.getMdn(MainActivity.this));
+				json.put("email", PreferenceUtil.instance(MainActivity.this).getEmail());
+				json.put("name", PreferenceUtil.instance(MainActivity.this).getName());
+				
+				Log.d("LDK", "url:" + url);
+				Log.d("LDK", json.toString(1));
+				
+				mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+					@Override
+					public void callback(String url, JSONObject object, AjaxStatus status) {
+						LoadingDialog.hideLoading();
+						try {
+							if(object.getInt("result") == 0) {
+								PreferenceUtil.instance(MainActivity.this).setMdn(Utils.getMdn(MainActivity.this));
+								
+								mLoginDialog.dismiss();
+								checkSurveyExist();
+							} else {
+								Utils.showToast(MainActivity.this, "네트워크 오류입니다");
+							}
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 	};
 

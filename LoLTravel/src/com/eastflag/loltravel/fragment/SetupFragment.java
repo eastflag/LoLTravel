@@ -18,6 +18,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.LoLApplication;
+import com.eastflag.loltravel.MainActivity;
 import com.eastflag.loltravel.R;
 import com.eastflag.loltravel.dialog.LoadingDialog;
 import com.eastflag.loltravel.utils.PreferenceUtil;
@@ -212,7 +213,7 @@ public class SetupFragment extends Fragment {
 		JSONObject json = new JSONObject();
 
 		try {
-			json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+			json.put("id", PreferenceUtil.instance(getActivity()).getMdn());
 			
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", json.toString(1));
@@ -410,7 +411,7 @@ public class SetupFragment extends Fragment {
 			JSONObject jsonSo = new JSONObject();
 			JSONObject jsonRe = new JSONObject();
 			try {
-				json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+				json.put("id", PreferenceUtil.instance(getActivity()).getMdn());
 				
 				jsonSo.put("sex", a11);
 				jsonSo.put("age", q12_input.getText().toString());
@@ -434,7 +435,9 @@ public class SetupFragment extends Fragment {
 					public void callback(String url, JSONObject object, AjaxStatus status) {
 						LoadingDialog.hideLoading();
 						//update or insert
-						Utils.showToast(getActivity(), "저장하였습니다");
+						Utils.showToast(getActivity(), getActivity().getResources().getString(R.string.toast_success));
+						MainActivity activity = (MainActivity) getActivity();
+						activity.onBackPressed();
 					}
 				});
 				

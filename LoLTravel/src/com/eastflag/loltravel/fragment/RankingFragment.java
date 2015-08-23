@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,8 +63,12 @@ public class RankingFragment extends Fragment {
 		mAdapter = new RankingAdapter(getActivity(), mRankingList);
 		lv_ranking.setAdapter(mAdapter);
 		
-		String image_url = String.format("http://graph.facebook.com/%s/picture?type=square", PreferenceUtil.instance(getActivity()).getFacebookId());
-		mAq.id(R.id.iv_profile).image(image_url);
+		String facebook_id = PreferenceUtil.instance(getActivity()).getFacebookId();
+		if(!TextUtils.isEmpty(facebook_id)) {
+			String image_url = String.format("http://graph.facebook.com/%s/picture?type=square", facebook_id);
+			mAq.id(R.id.iv_profile).image(image_url);
+		}
+		
 		tv_name.setText(PreferenceUtil.instance(getActivity()).getName());
 		
 		getMyPoint();
@@ -78,7 +83,7 @@ public class RankingFragment extends Fragment {
 		String url = LoLApplication.HOST + LoLApplication.API_POINT_GETMYPOINT;
 		JSONObject json = new JSONObject();
 		try {
-			json.put("userId", PreferenceUtil.instance(getActivity()).getEmail());
+			json.put("userId", PreferenceUtil.instance(getActivity()).getMdn());
 			
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", json.toString(1));

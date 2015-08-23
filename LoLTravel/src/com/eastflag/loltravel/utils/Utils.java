@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 public class Utils {
@@ -78,5 +79,15 @@ public class Utils {
 		} else {
 			return "";
 		}
+	}
+	
+	public static String getMdn(Context context) {
+		TelephonyManager tMgr =(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+		//2015-06-29 전화번호가 +82로 시작하는 경우 보정
+		String number = tMgr.getLine1Number();
+		if(number.startsWith("+82")) {
+			number = number.replace("+82", "0");
+		}
+	    return number;
 	}
 }

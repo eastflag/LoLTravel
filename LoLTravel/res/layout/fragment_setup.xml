@@ -270,7 +270,7 @@
         style="@style/Button_small_black"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Submit" />
+        android:text="@string/ok" />
 
 </LinearLayout>
 </ScrollView>

@@ -74,7 +74,7 @@ public class MyinfoFragment extends Fragment {
 		JSONObject json = new JSONObject();
 
 		try {
-			json.put("userId", PreferenceUtil.instance(getActivity()).getEmail());
+			json.put("userId", PreferenceUtil.instance(getActivity()).getMdn());
 			
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", json.toString(1));

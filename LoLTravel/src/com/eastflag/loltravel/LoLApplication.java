@@ -12,6 +12,7 @@ public class LoLApplication extends Application {
 	public static final String HOST = "http://www.javabrain.kr:4000";
 	public static final String API_LOGIN_FACEBOOK = "/api/user/facebookAuth";
 	public static final String API_LOGIN_LOCAL = "/api/user/localAuth";
+	public static final String API_USER_ADD = "/api/lol/user/add"; //사용자 등록
 	public static final String API_SURVEY_ADD = "/api/lol/survey/add";
 	public static final String API_SURVEY_GET = "/api/lol/survey/get";
 	public static final String API_TRAVEL_ADD = "/api/lol/travel/add";

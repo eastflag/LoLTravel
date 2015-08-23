@@ -15,6 +15,14 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		super(context);
 	}
 	
+	public void setMdn(String mdn) {
+		put("mdn", mdn);
+	}
+	
+	public String getMdn() {
+		return get("mdn");
+	}
+	
 	public void setEmail(String email) {
 		put("email", email);
 	}

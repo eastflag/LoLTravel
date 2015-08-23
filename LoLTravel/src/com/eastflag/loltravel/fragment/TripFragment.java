@@ -386,7 +386,7 @@ public class TripFragment extends Fragment {
 		JSONObject json = new JSONObject();
 		JSONObject jsonSo = new JSONObject();
 		try {
-			json.put("id", PreferenceUtil.instance(getActivity()).getEmail());
+			json.put("id", PreferenceUtil.instance(getActivity()).getMdn());
 			
 			jsonSo.put("flight", a31);
 			jsonSo.put("mode", a32);
