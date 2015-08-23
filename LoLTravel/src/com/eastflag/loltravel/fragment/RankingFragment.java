@@ -83,7 +83,7 @@ public class RankingFragment extends Fragment {
 		String url = LoLApplication.HOST + LoLApplication.API_POINT_GETMYPOINT;
 		JSONObject json = new JSONObject();
 		try {
-			json.put("userId", PreferenceUtil.instance(getActivity()).getMdn());
+			json.put("userId", PreferenceUtil.instance(getActivity()).getId());
 			
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", json.toString(1));

@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Point" android:textSize="18sp" />
+    
+   	<LinearLayout style="@style/Line"
+        android:layout_marginTop="10dp" android:layout_marginBottom="10dp" />
+   	
+   	<include layout="@layout/ranking_list_row"/>
+   	
+   	<TextView
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Top Ranking" android:textSize="18sp" />
+    
+   	<LinearLayout style="@style/Line"
+        android:layout_marginTop="10dp" android:layout_marginBottom="10dp" />
+   	
+   	<ListView 
+   	    android:id="@+id/lv_ranking"
+   	    android:layout_width="match_parent" android:layout_height="wrap_content"></ListView>
+
+</LinearLayout>

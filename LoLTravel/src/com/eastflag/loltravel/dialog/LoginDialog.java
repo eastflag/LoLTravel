@@ -37,6 +37,8 @@ public class LoginDialog extends Dialog {
 		lpWindow.dimAmount = 0.7f;
 		getWindow().setAttributes(lpWindow);
 		
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		
 		setContentView(R.layout.login_dialog);
 		
 		et_email = (EditText)findViewById(R.id.et_email);
@@ -57,7 +59,7 @@ public class LoginDialog extends Dialog {
 		@Override
 		public void onClick(View v) {
 			MyInfoVO myInfo = new MyInfoVO();
-			myInfo.mdn = Utils.getMdn(mContext);;
+			//myInfo.mdn = Utils.getMdn(mContext);;
 			myInfo.email = et_email.getText().toString();
 			myInfo.name = et_name.getText().toString();
 			
@@ -70,11 +72,6 @@ public class LoginDialog extends Dialog {
 				Utils.showToast(mContext, "올바른 이메일 형식을 입력하세요.");
 				return;
 			}
-			
-			//저장 : mdn은 등록 성공후 저장한다.
-			//PreferenceUtil.instance(mContext).setMdn(myInfo.mdn);
-			PreferenceUtil.instance(mContext).setEmail(myInfo.email);
-			PreferenceUtil.instance(mContext).setName(myInfo.name);
 			
 			//로그인 처리
 			mListener.onLogin(myInfo);

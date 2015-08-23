@@ -257,9 +257,9 @@ public class MainActivity extends Activity {
 	}
 	
 	private void checkLogin() {
-		String mdn = PreferenceUtil.instance(this).getMdn();
+		String id = PreferenceUtil.instance(this).getId();
 		
-		if(TextUtils.isEmpty(mdn)) {
+		if(TextUtils.isEmpty(id)) {
 			showLoginDialog();
 		} else {
 			checkSurveyExist();
@@ -304,7 +304,7 @@ public class MainActivity extends Activity {
 				mEmail = response.getEmail();
 				
 				//이메일, 이름, 아이디 저장
-				PreferenceUtil.instance(MainActivity.this).setMdn(mEmail);
+				PreferenceUtil.instance(MainActivity.this).setId(mEmail);
 				PreferenceUtil.instance(MainActivity.this).setName(mName);
 				PreferenceUtil.instance(MainActivity.this).setFacebookId(mId);
 				
@@ -323,7 +323,7 @@ public class MainActivity extends Activity {
 		JSONObject json = new JSONObject();
 
 		try {
-			json.put("id", Utils.getMdn(MainActivity.this));
+			json.put("id", PreferenceUtil.instance(MainActivity.this).getId());
 			
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", json.toString(1));
@@ -477,15 +477,15 @@ public class MainActivity extends Activity {
 	
 	LoginListener mLoginListener = new LoginListener() {
 		@Override
-		public void onLogin(MyInfoVO myInfo) {
+		public void onLogin(final MyInfoVO myInfo) {
 			LoadingDialog.showLoading(MainActivity.this);
 			String url = LoLApplication.HOST + LoLApplication.API_USER_ADD;
 			JSONObject json = new JSONObject();
 
 			try {
-				json.put("id", Utils.getMdn(MainActivity.this));
-				json.put("email", PreferenceUtil.instance(MainActivity.this).getEmail());
-				json.put("name", PreferenceUtil.instance(MainActivity.this).getName());
+				json.put("id", myInfo.email); //email이 키
+				//json.put("email", PreferenceUtil.instance(MainActivity.this).getEmail());
+				json.put("name", myInfo.name);
 				
 				Log.d("LDK", "url:" + url);
 				Log.d("LDK", json.toString(1));
@@ -496,7 +496,9 @@ public class MainActivity extends Activity {
 						LoadingDialog.hideLoading();
 						try {
 							if(object.getInt("result") == 0) {
-								PreferenceUtil.instance(MainActivity.this).setMdn(Utils.getMdn(MainActivity.this));
+								//로그인 성공시 id(email), name 저장
+								PreferenceUtil.instance(MainActivity.this).setId(myInfo.email);
+								PreferenceUtil.instance(MainActivity.this).setName(myInfo.name);
 								
 								mLoginDialog.dismiss();
 								checkSurveyExist();

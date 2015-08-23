@@ -79,4 +79,14 @@
     <string name="check_31">Check if you use flight for this trip</string>
     <string name="check_32">Check what is your travel mode for this trip</string>
     <string name="check_33">Check what is your purpose for this trip</string>
+    
+    
+    
+    <string name="email">e-mail</string>
+    <string name="name">name</string>
+    <string name="register">register</string>
+    <string name="menu1">Socioeconomic &amp; Residential Environment</string>
+    <string name="menu2">New Trip</string>
+    <string name="menu3">Travel History</string>
+    <string name="menu4">Point Ranking</string>
 </resources>

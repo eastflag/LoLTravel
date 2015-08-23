@@ -213,7 +213,7 @@ public class SetupFragment extends Fragment {
 		JSONObject json = new JSONObject();
 
 		try {
-			json.put("id", PreferenceUtil.instance(getActivity()).getMdn());
+			json.put("id", PreferenceUtil.instance(getActivity()).getId());
 			
 			Log.d("LDK", "url:" + url);
 			Log.d("LDK", json.toString(1));
@@ -411,7 +411,7 @@ public class SetupFragment extends Fragment {
 			JSONObject jsonSo = new JSONObject();
 			JSONObject jsonRe = new JSONObject();
 			try {
-				json.put("id", PreferenceUtil.instance(getActivity()).getMdn());
+				json.put("id", PreferenceUtil.instance(getActivity()).getId());
 				
 				jsonSo.put("sex", a11);
 				jsonSo.put("age", q12_input.getText().toString());

@@ -81,7 +81,7 @@ public class Utils {
 		}
 	}
 	
-	public static String getMdn(Context context) {
+/*	public static String getMdn(Context context) {
 		TelephonyManager tMgr =(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
 		//2015-06-29 전화번호가 +82로 시작하는 경우 보정
 		String number = tMgr.getLine1Number();
@@ -89,5 +89,5 @@ public class Utils {
 			number = number.replace("+82", "0");
 		}
 	    return number;
-	}
+	}*/
 }
