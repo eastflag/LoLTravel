@@ -58,7 +58,7 @@
 	    <EditText
 	        android:id="@+id/q13_input"
 	        android:layout_width="100dp" android:layout_height="35dp" 
-	        android:hint="won" android:gravity="right|center_vertical" android:inputType="number"
+	        android:hint="@string/unit" android:gravity="right|center_vertical" android:inputType="number"
 	        android:background="@drawable/input"/>
 	    <!-- Q14  -->
         <TextView

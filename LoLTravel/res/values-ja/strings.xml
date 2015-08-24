@@ -37,7 +37,7 @@
     <string name="q11_1">女性 </string>
     <string name="q11_2"> 男性 </string>
     <string name="q12">2. 年齢は?</string>
-    <string name="q13">3. あなたの平均所得 </string>
+    <string name="q13">3. あなたの平均所得 (単位,Yen)</string>
     <string name="q14">4. あなたの 住所? </string>
     <string name="q15">5. ドライブのライセンスを持っていますか？</string>
     <string name="q15_1">yes</string>
@@ -81,4 +81,13 @@
     <string name="check_31"> 空券を使用するか確認してください </string>
     <string name="check_32"> 交通手段が何なのか確認してください </string>
     <string name="check_33"> 通行目的が何なのか確認してください </string>
+    
+    <string name="email">メール</string>
+    <string name="name">お名前</string>
+    <string name="register">登録</string>
+    <string name="menu1">社会経済的特性 &amp; 居住環境の満足度 </string>
+    <string name="menu2">新しいトリップ</string>
+    <string name="menu3">通行データ</string>
+    <string name="menu4">スコアランキング</string>
+    <string name="unit">Yen</string>
 </resources>

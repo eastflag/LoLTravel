@@ -35,7 +35,7 @@
     <string name="q11_1">여</string>
     <string name="q11_2">남</string>
     <string name="q12">2. 연령은?</string>
-    <string name="q13">3. 월 평균소득</string>
+    <string name="q13">3. 월 평균소득(단위, 원)</string>
     <string name="q14">4. 주소</string>
     <string name="q15">5. 운전면허를 소지하고 있습니까?</string>
     <string name="q15_1">네</string>
@@ -79,4 +79,13 @@
     <string name="check_31">항공편 이용여부를 체크하세요</string>
     <string name="check_32">통행수단이 무엇인지 체크하세요</string>
     <string name="check_33">통행목적이 무엇인지 체크하세요</string>
+    
+    <string name="email">이메일</string>
+    <string name="name">이름</string>
+    <string name="register">등록</string>
+    <string name="menu1">사회경제적특성 &amp; 거주만족도</string>
+    <string name="menu2">새로운 통행</string>
+    <string name="menu3">통행 기록</string>
+    <string name="menu4">점수 순위</string>
+    <string name="unit">원</string>
 </resources>

@@ -35,7 +35,7 @@
     <string name="q11_1"> 女 </string>
     <string name="q11_2"> 男 </string>
     <string name="q12">2. 年龄 </string>
-    <string name="q13">3. 平均收入 </string>
+    <string name="q13">3. 平均收入 (单元,Yuan)  </string>
     <string name="q14">4. 住址 </string>
     <string name="q15">5. 您是否有驾照?</string>
     <string name="q15_1"> 是 </string>
@@ -79,4 +79,13 @@
     <string name="check_31"> 请确认在本次旅行中是否乘坐过飞机</string>
     <string name="check_32"> 请确认在本次旅游中的行程模式 </string>
     <string name="check_33"> 请确认本次旅行的目的 </string>
+    
+    <string name="email">邮箱</string>
+    <string name="name">姓名</string>
+    <string name="register">登记</string>
+    <string name="menu1">社会经济特征 &amp; 居住环境</string>
+    <string name="menu2">新通行</string>
+    <string name="menu3">通行记录</string>
+    <string name="menu4">排行</string>
+    <string name="unit">Yuan</string>
 </resources>

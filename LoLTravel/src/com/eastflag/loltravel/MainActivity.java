@@ -1,5 +1,7 @@
 package com.eastflag.loltravel;
 
+import java.util.Locale;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -486,6 +488,8 @@ public class MainActivity extends Activity {
 				json.put("id", myInfo.email); //email이 키
 				//json.put("email", PreferenceUtil.instance(MainActivity.this).getEmail());
 				json.put("name", myInfo.name);
+				//국적 정보
+				json.put("locale", Locale.getDefault().getCountry());
 				
 				Log.d("LDK", "url:" + url);
 				Log.d("LDK", json.toString(1));

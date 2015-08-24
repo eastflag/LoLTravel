@@ -35,7 +35,7 @@
     <string name="q11_1">female</string>
     <string name="q11_2">man</string>
     <string name="q12">2. Your age?</string>
-    <string name="q13">3. Your average income</string>
+    <string name="q13">3. Your average income(Unit, dollar)</string>
     <string name="q14">4. Your address</string>
     <string name="q15">5. Do you have a drive license?</string>
     <string name="q15_1">yes</string>
@@ -80,8 +80,6 @@
     <string name="check_32">Check what is your travel mode for this trip</string>
     <string name="check_33">Check what is your purpose for this trip</string>
     
-    
-    
     <string name="email">e-mail</string>
     <string name="name">name</string>
     <string name="register">register</string>
@@ -89,4 +87,5 @@
     <string name="menu2">New Trip</string>
     <string name="menu3">Travel History</string>
     <string name="menu4">Point Ranking</string>
+    <string name="unit">dollar</string>
 </resources>
