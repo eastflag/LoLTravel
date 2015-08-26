@@ -58,14 +58,14 @@ public class RankingAdapter extends BaseAdapter {
 		}
 		Log.d("LDK", "count:" + mRankingList.get(position).point);
 		Log.d("LDK", "name:" + mRankingList.get(position).name);
-		Log.d("LDK", "facebook_id:" + mRankingList.get(position).facebook_id);
+		Log.d("LDK", "facebook_id:" + mRankingList.get(position).email);
 		
 		holder.tvRank.setText(String.valueOf(position+1)); //순위
 		holder.tvName.setText(mRankingList.get(position).name);
 		holder.tvPoint.setText(String.valueOf((mRankingList.get(position).point)) + " point");
-		AQuery aq = new AQuery(convertView);
-		String image_url = String.format("http://graph.facebook.com/%s/picture?type=square", mRankingList.get(position).facebook_id);
-		aq.id(R.id.iv_profile).image(image_url);
+		//AQuery aq = new AQuery(convertView);
+		//String image_url = String.format("http://graph.facebook.com/%s/picture?type=square", mRankingList.get(position).email);
+		//aq.id(R.id.iv_profile).image(image_url);
 		
 		return convertView;
 	}

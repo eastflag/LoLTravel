@@ -44,6 +44,15 @@ user - survey
 
 목적지 정보를 입력하면 preference에 travelId와 origin 정보를 삭제한다.
 
+설문조사 존재 유무 가져오기---------------------------------------------
+http://www.javabrain.kr:4000/api/lol/survey/get
+{
+ "id": "eastflag@gmail.com"
+}
+
+
+
+
 url:http://www.javabrain.kr:4000/api/lol/travel/getlist-------------------------------------------------------------
 {
  "userId": "eastflag@gmail.com"

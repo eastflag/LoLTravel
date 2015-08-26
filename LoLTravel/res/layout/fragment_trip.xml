@@ -2,37 +2,48 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="3dp" 
-        android:orientation="horizontal" android:gravity="center_horizontal">
-
-        <Button
-            android:id="@+id/button1"
-            style="@style/Button_small_black"
-            android:layout_width="100dp" android:layout_height="wrap_content"
-            android:text="Travel Info" />
-
-        <Button
-            android:id="@+id/button2"
-            style="@style/Button_small_black"
-            android:layout_width="100dp" android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
-            android:text="Origin" />
-
-        <Button
-            android:id="@+id/button3"
-            style="@style/Button_small_black"
-            android:layout_width="100dp" android:layout_height="wrap_content"
-            android:text="Destination" />
-
-    </LinearLayout>
+    <TextView
+		android:layout_width="match_parent" android:layout_height="wrap_content"
+		android:gravity="center" android:background="#FF999999" android:padding="10dp"
+		android:text="@string/menu2"
+		android:textSize="20sp" android:textStyle="bold" android:textColor="#FFFFFFFF" />
     
-    <fragment
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment" />
+    <LinearLayout 
+	    android:layout_width="fill_parent" android:layout_height="fill_parent"
+	    android:orientation="vertical"
+	    android:padding="10dp">
+	
+	    <LinearLayout
+	        android:layout_width="match_parent" android:layout_height="wrap_content"
+	        android:layout_marginTop="3dp" 
+	        android:orientation="horizontal" android:gravity="center_horizontal">
+	
+	        <Button
+	            android:id="@+id/button1"
+	            style="@style/Button_small_black"
+	            android:layout_width="100dp" android:layout_height="wrap_content"
+	            android:text="Travel Info" />
+	
+	        <Button
+	            android:id="@+id/button2"
+	            style="@style/Button_small_black"
+	            android:layout_width="100dp" android:layout_height="wrap_content"
+	            android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+	            android:text="Origin" />
+	
+	        <Button
+	            android:id="@+id/button3"
+	            style="@style/Button_small_black"
+	            android:layout_width="100dp" android:layout_height="wrap_content"
+	            android:text="Destination" />
+	
+	    </LinearLayout>
+	    
+	    <fragment
+	        android:id="@+id/map"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        class="com.google.android.gms.maps.MapFragment" />
+    </LinearLayout>
 
 </LinearLayout>

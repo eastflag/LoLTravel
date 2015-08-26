@@ -127,11 +127,11 @@ public class RankingFragment extends Fragment {
 						for(int i=0; i< array.length(); ++i) {
 							JSONObject json = array.getJSONObject(i);
 							int count = json.getInt("count");
-							String id = json.getJSONObject("_id").getJSONObject("facebook").getString("id");
-							String name = json.getJSONObject("_id").getJSONObject("facebook").getString("name");
+							String id = json.getJSONObject("_id").getString("_id");
+							String name = json.getJSONObject("_id").getString("name");
 							
 							RankingVO ranking = new RankingVO();
-							ranking.facebook_id = id;
+							ranking.email = id;
 							ranking.name = name;
 							ranking.point = count;
 							mRankingList.add(ranking);

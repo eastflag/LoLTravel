@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.eastflag.loltravel.MainActivity;
 import com.eastflag.loltravel.R;
 import com.eastflag.loltravel.dto.MyInfoVO;
 import com.eastflag.loltravel.listener.LoginListener;
@@ -46,6 +47,9 @@ public class LoginDialog extends Dialog {
 		bt_login = (Button)findViewById(R.id.bt_login);
 		
 		bt_login.setOnClickListener(mClick);
+		
+		et_email.setText(PreferenceUtil.instance(mContext).getId());
+		et_name.setText(PreferenceUtil.instance(mContext).getName());
 	}
 	
 	@Override
@@ -58,6 +62,11 @@ public class LoginDialog extends Dialog {
 	View.OnClickListener mClick = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+			if(!Utils.isNetworkConnected(mContext)) {
+				Utils.showToast(mContext, "network connection is not available");
+				return;
+			}
+			
 			MyInfoVO myInfo = new MyInfoVO();
 			//myInfo.mdn = Utils.getMdn(mContext);;
 			myInfo.email = et_email.getText().toString();

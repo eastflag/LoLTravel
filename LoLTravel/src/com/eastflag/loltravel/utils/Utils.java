@@ -1,21 +1,23 @@
 package com.eastflag.loltravel.utils;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.eastflag.loltravel.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
-import android.telephony.TelephonyManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.Toast;
+
+import com.eastflag.loltravel.R;
 
 public class Utils {
 
@@ -80,6 +82,31 @@ public class Utils {
 			return "";
 		}
 	}
+	
+	public static boolean isNetworkConnected(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo ni = cm.getActiveNetworkInfo();
+		if (ni == null) {
+			return false;
+		} else
+			return true;
+	}
+	
+	public static boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com"); //You can replace it with your name
+
+            if (ipAddr.equals("")) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
 	
 /*	public static String getMdn(Context context) {
 		TelephonyManager tMgr =(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);

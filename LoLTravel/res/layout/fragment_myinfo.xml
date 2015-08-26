@@ -2,7 +2,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+    <TextView
+		android:layout_width="match_parent" android:layout_height="wrap_content"
+		android:gravity="center" android:background="#FF999999" android:padding="10dp"
+		android:text="@string/menu3"
+		android:textSize="20sp" android:textStyle="bold" android:textColor="#FFFFFFFF" />
+    
+    <LinearLayout 
+	    android:layout_width="fill_parent" android:layout_height="fill_parent"
+	    android:orientation="vertical"
+	    android:padding="10dp">
 	
-	<ListView android:id="@+id/lvHistory" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+		<ListView android:id="@+id/lvHistory" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+	</LinearLayout>
 	
 </LinearLayout>

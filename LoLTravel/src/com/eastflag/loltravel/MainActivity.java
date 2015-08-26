@@ -259,6 +259,12 @@ public class MainActivity extends Activity {
 	}
 	
 	private void checkLogin() {
+		if(!Utils.isNetworkConnected(this)) {
+			Utils.showToast(this, "network connection is not available");
+			showLoginDialog();
+			return;
+		}
+		
 		String id = PreferenceUtil.instance(this).getId();
 		
 		if(TextUtils.isEmpty(id)) {
