@@ -26,15 +26,14 @@ import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.eastflag.loltravel.utils.SharedObjects;
+import com.eastflag.loltravel.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-public class MyLocationService extends Service implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+public class MyLocationService extends Service {
 	private GoogleApiClient mGoogleApiClient;
 	private Location mLastLocation;
 	private LocationRequest mLocationRequest;
@@ -45,77 +44,72 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 	public MyLocationService() {
 		
 	}
+	
+    GoogleApiClient.ConnectionCallbacks mCallbacks = new GoogleApiClient.ConnectionCallbacks() {
+        @Override
+        public void onConnected(Bundle bundle) {
+/*    		Log.d("LDK", "Location onConnected:");
+    		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+    		if (mLastLocation != null) {
+    			postLocation();
+    		}*/
+            
+            //연결이 되면 위치 추적
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+
+        }
+    };
+    
+    LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+    		mLastLocation = location;
+            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            Log.d("LDK", mLastUpdateTime + ":" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
+            postLocation();
+        }
+    };
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO: Return the communication channel to the service.
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
+	
+	@Override
+    public void onCreate() {
+        mAq = new AQuery(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(mCallbacks)
+                .addOnConnectionFailedListener(mFailedListener)
+                .addApi(LocationServices.API)
+                .build();
+
+        mGoogleApiClient.connect();
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000 * 60 * 5); //10 minutes
+        mLocationRequest.setFastestInterval(1000 * 60 * 5);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        super.onCreate();
+    }
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d("LDK", "onStartCommand");
-		
-		mAq = new AQuery(this);
-		
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-        .addConnectionCallbacks(this)
-        .addOnConnectionFailedListener(this)
-        .addApi(LocationServices.API)
-        .build();
-		
-		mGoogleApiClient.connect();
-		
-		mLocationRequest = new LocationRequest();
-	    mLocationRequest.setInterval(1000 * 60 * 5); //5분
-	    mLocationRequest.setFastestInterval(1000 * 60 * 5);
-	    mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
 	    
 		return START_STICKY;
 	}
 
 	@Override
 	public void onDestroy() {
-		LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+		LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
 		super.onDestroy();
-	}
-
-	@Override
-	public void onConnected(Bundle connectionHint) {
-		Log.d("LDK", "Location onConnected:");
-		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-		if (mLastLocation != null) {
-			Log.d("LDK", "Service :" + mLastLocation.getLatitude()
-					+ mLastLocation.getLongitude());
-			// mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-			// mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-
-			postLocation();
-		}
-        
-        //연결이 되면 위치 추적
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-	}
-
-	@Override
-	public void onConnectionSuspended(int cause) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult result) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		mLastLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        Log.d("LDK", mLastUpdateTime + ":" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
-        postLocation();
 	}
 	
 	private void postLocation() {
@@ -139,25 +133,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 				
 				json.put("lat", mLastLocation.getLatitude());
 				json.put("lng", mLastLocation.getLongitude());
-				
-				List<Address> addresses = null;
-				try {
-					Geocoder geocoder = new Geocoder(SharedObjects.context, Locale.getDefault());
-					addresses = geocoder.getFromLocation(
-							mLastLocation.getLatitude(),
-							mLastLocation.getLongitude(), 1);
-				} catch (IOException ioException) {
-					Log.d("LDK", ioException.getMessage());
-				} catch (IllegalArgumentException illegalArgumentException) {
-					Log.d("LDK", illegalArgumentException.getMessage());
-				} catch (NullPointerException e) {
-					
-				}
-				if(addresses != null && addresses.size() > 0) {
-					json.put("address", addresses.get(0).getAddressLine(0));
-				} else {
-					json.put("address", "");
-				}
+				json.put("address", Utils.getAddress(MyLocationService.this, mLastLocation.getLatitude(), mLastLocation.getLongitude()));
 				
 				Log.d("LDK", "url:" + url);
 				Log.d("LDK", json.toString(1));
@@ -168,7 +144,7 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 						//update or insert
 						try {
 							if(object.getInt("result") == 0) {
-								Log.d("LDK", "result:" + object.toString(1));
+								//Log.d("LDK", "result:" + object.toString(1));
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -181,4 +157,11 @@ public class MyLocationService extends Service implements ConnectionCallbacks, O
 			}
 		}
 	}
+	
+	GoogleApiClient.OnConnectionFailedListener mFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        }
+    };
 }

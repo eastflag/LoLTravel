@@ -170,9 +170,9 @@ public class MainActivity extends Activity {
 	
 	@Override
 	protected void onDestroy() {
-		if(TextUtils.isEmpty(PreferenceUtil.instance(this).getOrigin())) {
+		/*if(TextUtils.isEmpty(PreferenceUtil.instance(this).getOrigin())) {
 			stopService(new Intent(this, MyLocationService.class));
-		}
+		}*/
 		super.onDestroy();
 	}
 
