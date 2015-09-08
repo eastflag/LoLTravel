@@ -62,4 +62,11 @@ public class PreferenceUtil extends BasePreferenceUtil {
 	public String getOrigin() {
 		return get("origin");
 	}
+	
+	public void setLocationTime(int timestamp) {
+		put("location_time", timestamp);
+	}
+	public int getLocationTime() {
+		return get("location_time", 0);
+	}
 }

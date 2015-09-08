@@ -72,6 +72,14 @@ public class MyLocationService extends Service {
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             Log.d("LDK", mLastUpdateTime + ":" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
             postLocation();
+            
+            //업로드 시간이 3분이 경과하지 않으면 서버에 업로드 하지 않는다.
+            int lastTime = PreferenceUtil.instance(MyLocationService.this).getLocationTime();
+            int currentTime = (int)(System.currentTimeMillis()/1000);
+            if ((currentTime-lastTime) > 60 * 3) {
+                PreferenceUtil.instance(MyLocationService.this).setLocationTime(currentTime);
+                postLocation();
+            }
         }
     };
 
@@ -95,7 +103,7 @@ public class MyLocationService extends Service {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000 * 60 * 5); //10 minutes
         mLocationRequest.setFastestInterval(1000 * 60 * 5);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         super.onCreate();
     }
