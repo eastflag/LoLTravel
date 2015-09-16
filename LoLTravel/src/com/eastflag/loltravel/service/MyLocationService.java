@@ -1,18 +1,13 @@
 package com.eastflag.loltravel.service;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -25,7 +20,6 @@ import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
 import com.eastflag.loltravel.LoLApplication;
 import com.eastflag.loltravel.utils.PreferenceUtil;
-import com.eastflag.loltravel.utils.SharedObjects;
 import com.eastflag.loltravel.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -48,12 +42,12 @@ public class MyLocationService extends Service {
     GoogleApiClient.ConnectionCallbacks mCallbacks = new GoogleApiClient.ConnectionCallbacks() {
         @Override
         public void onConnected(Bundle bundle) {
-/*    		Log.d("LDK", "Location onConnected:");
+    		Log.d("LDK", "Location onConnected:");
     		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
     		if (mLastLocation != null) {
     			postLocation();
-    		}*/
+    		}
             
             //연결이 되면 위치 추적
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
@@ -72,14 +66,6 @@ public class MyLocationService extends Service {
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             Log.d("LDK", mLastUpdateTime + ":" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
             postLocation();
-            
-            //업로드 시간이 3분이 경과하지 않으면 서버에 업로드 하지 않는다.
-            int lastTime = PreferenceUtil.instance(MyLocationService.this).getLocationTime();
-            int currentTime = (int)(System.currentTimeMillis()/1000);
-            if ((currentTime-lastTime) > 60 * 3) {
-                PreferenceUtil.instance(MyLocationService.this).setLocationTime(currentTime);
-                postLocation();
-            }
         }
     };
 
@@ -91,6 +77,11 @@ public class MyLocationService extends Service {
 	@Override
     public void onCreate() {
         mAq = new AQuery(this);
+        
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000 * 60 * 5); //5 minutes
+        mLocationRequest.setFastestInterval(1000 * 60 * 5);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(mCallbacks)
@@ -99,12 +90,7 @@ public class MyLocationService extends Service {
                 .build();
 
         mGoogleApiClient.connect();
-
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000 * 60 * 5); //10 minutes
-        mLocationRequest.setFastestInterval(1000 * 60 * 5);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
+        
         super.onCreate();
     }
 
@@ -121,11 +107,20 @@ public class MyLocationService extends Service {
 	}
 	
 	private void postLocation() {
+        
 		//send location to activity
 		Intent intent = new Intent("com.eastflag.location");
 		intent.putExtra("lat", mLastLocation.getLatitude());
 		intent.putExtra("lng", mLastLocation.getLongitude());
 		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+		
+        //업로드 시간이 3분이 경과하지 않으면 서버에 업로드 하지 않는다.
+        int lastTime = PreferenceUtil.instance(MyLocationService.this).getLocationTime();
+        int currentTime = (int)(System.currentTimeMillis()/1000);
+        if ((currentTime-lastTime) <= 60 * 3) {
+            PreferenceUtil.instance(MyLocationService.this).setLocationTime(currentTime);
+            return;
+        }
 		
 		//출발지 정보가 있으면 트래킹한다.
 		String originTime = PreferenceUtil.instance(this).getOrigin();

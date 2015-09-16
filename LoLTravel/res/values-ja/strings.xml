@@ -53,11 +53,11 @@
     <string name="q23">3. レジャー施設の満足度 </string>
     <string name="q24">4. 緑地の満足度</string>
     <string name="q25">5. あなたの居住面積は?</string>
-    <string name="q25_1">49.58m2</string>
-    <string name="q25_2">59.5m2</string>
-    <string name="q25_3">79.33m2</string>
-    <string name="q25_4">105.78m2</string>
-    <string name="q25_5">138.84m2</string>
+    <string name="q25_1">49.57m2 以下</string>
+    <string name="q25_2">49.58m2 ~ 59.4 m2 </string>
+    <string name="q25_3">59.5 m2 ~ 79.32 m2 </string>
+    <string name="q25_4">79.33 m2 ~ 105.78 m2 </string>
+    <string name="q25_5">105.79 m2 以上 </string>
     <string name="q3"> 通行手段と目的 </string>
     <string name="q31">1. 航空便を利用しました?</string>
     <string name="q31_1">yes</string>

@@ -51,11 +51,12 @@
     <string name="q23">3. 对休闲设施的满意度 </string>
     <string name="q24">4. 对绿地的满意度 </string>
     <string name="q25">5. 您的住宅面积?</string>
-    <string name="q25_1">49.58m2</string>
-    <string name="q25_2">59.5m2</string>
-    <string name="q25_3">79.33m2</string>
-    <string name="q25_4">105.78m2</string>
-    <string name="q25_5">138.84m2</string>
+    <string name="q25_1">49.57m2 下 </string>
+    <string name="q25_2">49.58m2 ~ 59.4 m2</string>
+    <string name="q25_3">59.5 m2 ~ 79.32 m2 </string>
+    <string name="q25_4">79.33 m2 ~ 105.78 m2 </string>
+    <string name="q25_5">105.79 m2 以上 </string>
+
     <string name="q3"> 行程模式和目的 </string>
     <string name="q31">1. 本次旅行中是否乘坐过飞机?</string>
     <string name="q31_1">yes</string>

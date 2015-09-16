@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.location.Address;
@@ -41,6 +42,10 @@ import com.eastflag.loltravel.dialog.LoadingDialog;
 import com.eastflag.loltravel.dto.MyLocation;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.eastflag.loltravel.utils.Utils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -66,7 +71,10 @@ public class TripFragment extends Fragment {
 	
 	Button btnSurvey, btnOrigin, btnDestination;
 	private AlertDialog mDialog;
+	private ProgressDialog mProgress;
 	private MapFragment mapFragment;
+	
+	private GoogleApiClient mGoogleApiClient;
 
 	public TripFragment() {
 		// Required empty public constructor
@@ -87,17 +95,28 @@ public class TripFragment extends Fragment {
 		
 		setUpMapIfNeeded();
 		
-		mLocation = new Location("dummyprovider");
-		mLocation.setLatitude(((MainActivity)getActivity()).mLatitude);
-		mLocation.setLongitude(((MainActivity)getActivity()).mLongitude);
-		if(mLocation != null) {
+		mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+	        .addConnectionCallbacks(mCallbacks)
+	        .addOnConnectionFailedListener(mFailedListener)
+	        .addApi(LocationServices.API)
+	        .build();
+		mGoogleApiClient.connect();
+		
+//		mLocation = new Location("dummyprovider");
+//		mLocation.setLatitude(((MainActivity)getActivity()).mLatitude);
+//		mLocation.setLongitude(((MainActivity)getActivity()).mLongitude);
+		//connect 콜백으로 이동
+/*		if(mLocation != null) {
 			Log.d("LDK", "loc:" + mLocation.getLatitude() + "," + mLocation.getLongitude());
 			mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13));
 			
-		}
+		}*/
 		
-		getTravelInfo();
+		//progress창 띄우고 위치를 찾을때까지대기
+		mProgress = new ProgressDialog(getActivity());
+		mProgress.setTitle("Wait for finding location...");
+		mProgress.setCancelable(false);
 		
 		return mView;
 	}
@@ -621,6 +640,34 @@ public class TripFragment extends Fragment {
 			}
 		}
 	};
+	
+	GoogleApiClient.ConnectionCallbacks mCallbacks = new GoogleApiClient.ConnectionCallbacks() {
+		@Override
+        public void onConnected(Bundle bundle) {
+			mProgress.dismiss();
+    		Log.d("LDK", "TripFragment: Location onConnected:");
+    		mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    		
+    		mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13));
+    		
+    		getTravelInfo();
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+
+        }
+    };
+    
+	GoogleApiClient.OnConnectionFailedListener mFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(ConnectionResult connectionResult) {
+        	mProgress.dismiss();
+        	Utils.showToast(getActivity(), "Can't find current location. Please retry");
+        	((MainActivity)getActivity()).onBackPressed();
+        }
+    };
 }
 
 //travel info insert

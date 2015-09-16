@@ -51,11 +51,11 @@
     <string name="q23">3. Satisfaction of Leisure facility</string>
     <string name="q24">4. Satisfaction of Green space</string>
     <string name="q25">5. What do you have your floor space?</string>
-    <string name="q25_1">49.58m2</string>
-    <string name="q25_2">59.5m2</string>
-    <string name="q25_3">79.33m2</string>
-    <string name="q25_4">105.78m2</string>
-    <string name="q25_5">138.84m2</string>
+    <string name="q25_1">Under 49.57m2</string>
+    <string name="q25_2">49.58m2 ~ 59.4 m2</string>
+    <string name="q25_3">59.5 m2 ~ 79.32 m2</string>
+    <string name="q25_4">79.33 m2 ~ 105.78 m2</string>
+    <string name="q25_5">Above 105.79 m2</string>
     <string name="q3">Travel mode and Purpose</string>
     <string name="q31">1. Did you use a flight for this trip?</string>
     <string name="q31_1">yes</string>
