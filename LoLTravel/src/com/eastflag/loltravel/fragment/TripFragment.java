@@ -648,10 +648,16 @@ public class TripFragment extends Fragment {
     		Log.d("LDK", "TripFragment: Location onConnected:");
     		mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     		
-    		mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13));
+    		if (mLocation == null) {
+    			Utils.showToast(getActivity(), "Can't find current location. Please retry");
+            	((MainActivity)getActivity()).onBackPressed();
+    		} else {
+    			mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(mLocation.getLatitude(), mLocation.getLongitude()), 13));
+        		
+        		getTravelInfo();
+    		}
     		
-    		getTravelInfo();
         }
 
         @Override
