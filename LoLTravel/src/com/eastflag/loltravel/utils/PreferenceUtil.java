@@ -47,12 +47,12 @@ public class PreferenceUtil extends BasePreferenceUtil {
 		return get("token");
 	}
 	
-	public void setTravelInfo(String id) {
+	public void setTravelInfo(int id) {
 		put("travel", id);
 	}
 	
-	public String getTravelInfo() {
-		return get("travel");
+	public int getTravelInfo() {
+		return get("travel", 0);
 	}
 	
 	public void setOrigin(String date) {

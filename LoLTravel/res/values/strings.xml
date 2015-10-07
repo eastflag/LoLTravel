@@ -88,4 +88,6 @@
     <string name="menu3">Travel History</string>
     <string name="menu4">Point Ranking</string>
     <string name="unit">dollar</string>
+    
+    <string name="travel_alert1">여행정보를 입력하세요.</string>
 </resources>

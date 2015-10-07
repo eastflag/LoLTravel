@@ -17,6 +17,7 @@ public class LoLApplication extends Application {
 	public static final String API_SURVEY_GET = "/api/lol/survey/get";
 	public static final String API_TRAVEL_ADD = "/api/lol/travel/add";
 	public static final String API_TRAVEL_UPDATE = "/api/lol/travel/update";
+	public static final String API_TRAVEL_LAST = "/api/lol/travel/last";
 	public static final String API_TRAVEL_GET = "/api/lol/travel/get";
 	public static final String API_LOCATION_ADD = "/api/lol/location/add";
 	public static final String API_LOCATION_GET = "/api/lol/location/get";

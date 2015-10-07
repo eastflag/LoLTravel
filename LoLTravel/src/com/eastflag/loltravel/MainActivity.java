@@ -369,6 +369,47 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	private void checkLastTravel() {
+		String url = LoLApplication.HOST + LoLApplication.API_TRAVEL_LAST;
+		JSONObject json = new JSONObject();
+
+		try {
+			json.put("userId", PreferenceUtil.instance(MainActivity.this).getId());
+			
+			Log.d("LDK", "url:" + url);
+			Log.d("LDK", json.toString(1));
+			
+			mAq.post(url, json, JSONObject.class, new AjaxCallback<JSONObject>(){
+				@Override
+				public void callback(String url, JSONObject object, AjaxStatus status) {
+					try {	
+						//작성중인 통행정보를 가져온다.
+						Log.d("LDK", object.toString(1));
+						
+						if(object.getInt("result") == 0) {
+							if(object.getJSONArray("data").length() > 0) {
+								JSONObject json = object.getJSONArray("data").getJSONObject(0);
+								PreferenceUtil.instance(MainActivity.this).setTravelInfo(json.getInt("_id"));
+								if(json.has("origin")) {
+									PreferenceUtil.instance(MainActivity.this).setOrigin(json.getJSONObject("origin").getString("created"));
+								}
+							} else {
+								PreferenceUtil.instance(MainActivity.this).setTravelInfo(0);
+								PreferenceUtil.instance(MainActivity.this).setOrigin("");
+							}
+						}
+
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void refreshLoggedUI() {
 		findViewById(R.id.beforeLogin).setVisibility(View.GONE);
 		findViewById(R.id.afterLogin).setVisibility(View.VISIBLE);
@@ -512,6 +553,7 @@ public class MainActivity extends Activity {
 								
 								mLoginDialog.dismiss();
 								checkSurveyExist();
+								checkLastTravel();
 							} else {
 								Utils.showToast(MainActivity.this, "네트워크 오류입니다");
 							}

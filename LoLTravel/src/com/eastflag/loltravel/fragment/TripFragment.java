@@ -3,7 +3,6 @@ package com.eastflag.loltravel.fragment;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -23,7 +22,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +42,6 @@ import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.eastflag.loltravel.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -139,8 +136,8 @@ public class TripFragment extends Fragment {
 	}
 
 	private void getTravelInfo() {
-		String travelId = PreferenceUtil.instance(getActivity()).getTravelInfo();
-		if(TextUtils.isEmpty(travelId)) {
+		int travelId = PreferenceUtil.instance(getActivity()).getTravelInfo();
+		if(travelId == 0) {
 			//기존 여행정보가 없다면 설문조사를 보여주고, 지도상에 origin 아이콘 표시한다.
 			if(mLocation != null) {
 				Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
@@ -427,7 +424,7 @@ public class TripFragment extends Fragment {
 							mDialog.dismiss();
 							Utils.showToast(getActivity(), getString(R.string.toast_success));
 							//new trip 정보 저장
-							String _id = object.getJSONObject("data").getString("_id");
+							int _id = object.getJSONObject("data").getInt("_id");
 							PreferenceUtil.instance(getActivity()).setTravelInfo(_id);
 							//show origin
 						}
@@ -515,7 +512,7 @@ public class TripFragment extends Fragment {
 							
 							Utils.showToast(getActivity(), getString(R.string.toast_success));
 							//여행정보와 출발지 시간을 pref에서 제거
-							PreferenceUtil.instance(getActivity()).setTravelInfo("");
+							PreferenceUtil.instance(getActivity()).setTravelInfo(0);
 							PreferenceUtil.instance(getActivity()).setOrigin("");
 							
 							//go to Main
@@ -536,7 +533,7 @@ public class TripFragment extends Fragment {
 		String url = LoLApplication.HOST + LoLApplication.API_LOCATION_GET;
 		JSONObject json = new JSONObject();
 		try {
-			String _id = PreferenceUtil.instance(getActivity()).getTravelInfo();
+			int _id = PreferenceUtil.instance(getActivity()).getTravelInfo();
 			json.put("travelId", _id);
 			
 			Log.d("LDK", "url:" + url);

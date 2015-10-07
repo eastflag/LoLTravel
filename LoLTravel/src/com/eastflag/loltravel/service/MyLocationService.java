@@ -125,13 +125,13 @@ public class MyLocationService extends Service {
 		//출발지 정보가 있으면 트래킹한다.
 		String originTime = PreferenceUtil.instance(this).getOrigin();
 		Log.d("LDK", "getOrigin:" + originTime);
-		if(!TextUtils.isEmpty(originTime) && !TextUtils.isEmpty(PreferenceUtil.instance(this).getTravelInfo())) {
+		if(!TextUtils.isEmpty(originTime) && PreferenceUtil.instance(this).getTravelInfo() != 0) {
 			//post to server
 			//서버로 데이터 전송
 			String url = LoLApplication.HOST + LoLApplication.API_LOCATION_ADD;
 			JSONObject json = new JSONObject();
 			try {
-				String _id = PreferenceUtil.instance(this).getTravelInfo();
+				int _id = PreferenceUtil.instance(this).getTravelInfo();
 				json.put("travelId", _id);
 				
 				json.put("lat", mLastLocation.getLatitude());
