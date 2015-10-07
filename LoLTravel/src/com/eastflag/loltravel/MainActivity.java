@@ -71,14 +71,14 @@ public class MainActivity extends Activity {
 	
 	public double mLatitude, mLongitude;
 	
-	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+/*	private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 	    @Override
 	    public void onReceive(Context context, Intent intent) {
 	    	mLatitude = intent.getDoubleExtra("lat", 0);
 	    	mLongitude = intent.getDoubleExtra("lng", 0);
 	    	Log.d("LDK", "MainActivity BR:" + mLatitude + "," + mLongitude);
 	    }
-	};
+	};*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
 		startService(new Intent(this, MyLocationService.class));
 		
 		//서비스에서 보내오는 위치정보를 수신
-		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("com.eastflag.location"));
+		//LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("com.eastflag.location"));
 		
 		//커스텀 액션바----------------------------------------------------------------------------------
 		ActionBar mActionBar = getActionBar();

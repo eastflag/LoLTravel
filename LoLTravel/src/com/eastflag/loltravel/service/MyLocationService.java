@@ -64,7 +64,7 @@ public class MyLocationService extends Service {
         public void onLocationChanged(Location location) {
     		mLastLocation = location;
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            Log.d("LDK", mLastUpdateTime + ":" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
+            //Log.d("LDK", mLastUpdateTime + ":" + mLastLocation.getLatitude() + mLastLocation.getLongitude());
             postLocation();
         }
     };
@@ -109,18 +109,18 @@ public class MyLocationService extends Service {
 	private void postLocation() {
         
 		//send location to activity
-		Intent intent = new Intent("com.eastflag.location");
-		intent.putExtra("lat", mLastLocation.getLatitude());
-		intent.putExtra("lng", mLastLocation.getLongitude());
-		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+		//Intent intent = new Intent("com.eastflag.location");
+		//intent.putExtra("lat", mLastLocation.getLatitude());
+		//intent.putExtra("lng", mLastLocation.getLongitude());
+		//LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 		
         //업로드 시간이 3분이 경과하지 않으면 서버에 업로드 하지 않는다.
         int lastTime = PreferenceUtil.instance(MyLocationService.this).getLocationTime();
         int currentTime = (int)(System.currentTimeMillis()/1000);
         if ((currentTime-lastTime) <= 60 * 3) {
-            PreferenceUtil.instance(MyLocationService.this).setLocationTime(currentTime);
             return;
         }
+        PreferenceUtil.instance(MyLocationService.this).setLocationTime(currentTime);
 		
 		//출발지 정보가 있으면 트래킹한다.
 		String originTime = PreferenceUtil.instance(this).getOrigin();
