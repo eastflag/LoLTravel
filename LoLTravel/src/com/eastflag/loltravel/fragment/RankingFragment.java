@@ -96,7 +96,7 @@ public class RankingFragment extends Fragment {
 						if(object.getInt("result") == 0) {
 							Log.d("LDK", "result:" + object.toString(1));
 
-							int count = object.getJSONObject("data").getInt("count");
+							int count = object.getJSONObject("data").getJSONArray("count").getJSONObject(0).getInt("count");
 							tv_point.setText(String.valueOf(count) + " point");
 						}
 					} catch (JSONException e) {
