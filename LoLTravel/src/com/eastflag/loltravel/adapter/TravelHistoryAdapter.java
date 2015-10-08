@@ -56,7 +56,7 @@ public class TravelHistoryAdapter extends BaseAdapter {
 		}
 
 		holder.tvDate.setText(mTravelList.get(position).created);
-		holder.tvDistance.setText(String.format("%,d km", mTravelList.get(position).distance));
+		holder.tvDistance.setText(String.format("%,d m", mTravelList.get(position).distance));
 		holder.tvPoint.setText(mTravelList.get(position).point + " point");
 		holder.tvOrigin.setText(mTravelList.get(position).mOrigin.address);
 		holder.tvDestination.setText(mTravelList.get(position).mDestination.address);
