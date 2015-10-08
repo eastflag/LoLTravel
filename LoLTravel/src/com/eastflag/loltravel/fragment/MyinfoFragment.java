@@ -90,6 +90,8 @@ public class MyinfoFragment extends Fragment {
 								MyTravel travel = new MyTravel();
 								travel.travelId = array.getJSONObject(i).getString("_id");
 								travel.created = Utils.getDateFromMongoDate(array.getJSONObject(i).getString("created"));
+								travel.distance = array.getJSONObject(i).getInt("distance");
+								travel.point = array.getJSONObject(i).getInt("point");
 								if(array.getJSONObject(i).has("origin") && array.getJSONObject(i).has("destination")) {
 									MyLocation origin = new MyLocation();
 									MyLocation destination = new MyLocation();

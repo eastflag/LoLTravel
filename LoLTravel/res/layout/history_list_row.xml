@@ -6,7 +6,8 @@
 
     <LinearLayout
 	    android:layout_width="match_parent" android:layout_height="wrap_content"
-	    android:padding="2dp"
+	    android:layout_marginTop="5dp"
+	    android:padding="5dp" android:background="@drawable/back_black_normal"
 	    android:orientation="vertical" >
 	    
 	    <LinearLayout
@@ -14,14 +15,15 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" >
 	        <TextView
-	            android:layout_width="40dp" android:layout_height="wrap_content"
+	            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
 	            android:gravity="center"
-	            android:text="날짜" />
+	            android:text="날짜" android:textStyle="bold" android:textSize="16sp"/>
 	        <TextView
 	            android:id="@+id/tvDate"
-	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:layout_width="0dp" android:layout_weight="9" android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dp"
 	            android:gravity="left"
-	            android:text="" />
+	            android:text="" android:textSize="14sp"/>
 	    </LinearLayout>
 	    
 	    <LinearLayout
@@ -29,14 +31,15 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" >
 	        <TextView
-	            android:layout_width="40dp" android:layout_height="wrap_content"
+	            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
 	            android:gravity="center"
-	            android:text="출발" />
+	            android:text="출발" android:textStyle="bold" android:textSize="16sp"/>
 	        <TextView
 	            android:id="@+id/tvOrigin"
-	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:layout_width="0dp" android:layout_weight="9" android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dp"
 	            android:gravity="left"
-	            android:text="" />
+	            android:text="" android:textSize="14sp"/>
 	    </LinearLayout>
 	    
 	    <LinearLayout
@@ -44,15 +47,49 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" >
 	        <TextView
-	            android:layout_width="40dp" android:layout_height="wrap_content"
+	            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
 	            android:gravity="center"
-	            android:text="도착" />
+	            android:text="도착" android:textStyle="bold" android:textSize="16sp"/>
 	        <TextView
 	            android:id="@+id/tvDestination"
-	            android:layout_width="match_parent" android:layout_height="wrap_content"
+	            android:layout_width="0dp" android:layout_weight="9" android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dp"
 	            android:gravity="left"
-	            android:text="" />
+	            android:text="" android:textSize="14sp"/>
 	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:layout_width="match_parent" android:layout_height="1dp"
+	        android:layout_marginTop="2dp" android:layout_marginBottom="2dp"
+	        android:background="#FFCCCCCC"
+	        android:orientation="horizontal" />
+	    
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <TextView
+	            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="거리" android:textStyle="bold" android:textSize="16sp"/>
+	        <TextView
+	            android:id="@+id/tvDistance"
+	            android:layout_width="0dp" android:layout_weight="4" android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dp"
+	            android:gravity="left"
+	            android:text="" android:textSize="14sp"/>
+	        <TextView
+	            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="점수" android:textStyle="bold" android:textSize="16sp"/>
+	        <TextView
+	            android:id="@+id/tvPoint"
+	            android:layout_width="0dp" android:layout_weight="4" android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dp"
+	            android:gravity="left"
+	            android:text="" android:textSize="14sp"/>
+	    </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

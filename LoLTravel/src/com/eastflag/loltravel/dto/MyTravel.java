@@ -7,4 +7,6 @@ public class MyTravel {
 	//public String destination_address;
 	public MyLocation mOrigin;
 	public MyLocation mDestination;
+	public int point;
+	public int distance;
 }

@@ -46,6 +46,8 @@ public class TravelHistoryAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			convertView = View.inflate(mContext, R.layout.history_list_row, null);
 			holder.tvDate = (TextView) convertView.findViewById(R.id.tvDate);
+			holder.tvDistance = (TextView) convertView.findViewById(R.id.tvDistance);
+			holder.tvPoint = (TextView) convertView.findViewById(R.id.tvPoint);
 			holder.tvOrigin = (TextView) convertView.findViewById(R.id.tvOrigin);
 			holder.tvDestination = (TextView) convertView.findViewById(R.id.tvDestination);
 			convertView.setTag(holder);
@@ -54,6 +56,8 @@ public class TravelHistoryAdapter extends BaseAdapter {
 		}
 
 		holder.tvDate.setText(mTravelList.get(position).created);
+		holder.tvDistance.setText(String.format("%,d km", mTravelList.get(position).distance));
+		holder.tvPoint.setText(mTravelList.get(position).point + " point");
 		holder.tvOrigin.setText(mTravelList.get(position).mOrigin.address);
 		holder.tvDestination.setText(mTravelList.get(position).mDestination.address);
 		
@@ -62,6 +66,8 @@ public class TravelHistoryAdapter extends BaseAdapter {
 	
 	class ViewHolder {
 		public TextView tvDate;
+		public TextView tvDistance;
+		public TextView tvPoint;
 		public TextView tvOrigin;
 		public TextView tvDestination;
 	}
