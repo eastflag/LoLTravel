@@ -44,6 +44,8 @@ user - survey
 
 목적지 정보를 입력하면 preference에 travelId와 origin 정보를 삭제한다.
 
+
+
 설문조사 존재 유무 가져오기---------------------------------------------
 http://www.javabrain.kr:4000/api/lol/survey/get
 {
@@ -51,6 +53,87 @@ http://www.javabrain.kr:4000/api/lol/survey/get
 }
 
 
+설문조사 입력하기-----------------------------------------------------------------------
+url:http://www.javabrain.kr:4000/api/lol/travel/add
+{
+ "id": "eastflag@gmail.com",
+ "travelInfo": {
+  "flight": 2,
+  "mode": 5,
+  "purpose": 4
+ }
+}
+
+result:{
+ "result": 0,
+ "data": {
+  "__v": 0,
+  "_id": 53,
+  "userId": "eastflag@gmail.com",
+  "travelInfo": {
+   "flight": 2,
+   "mode": 5,
+   "purpose": 4
+  },
+  "created": "2015-10-30T02:00:37.705Z"
+ }
+}
+
+
+출발지 입력하기------------------------------------------------------------------------
+url:http://www.javabrain.kr:4000/api/lol/travel/update
+{
+ "id": 53,
+ "origin": {
+  "lat": 37.5114684,
+  "lng": 127.0433475,
+  "address": "대한민국 서울특별시 강남구 논현2동 279-152"
+ }
+}
+result:{
+ "result": 0,
+ "data": {
+  "ok": 1,
+  "nModified": 1,
+  "n": 1
+ }
+}
+
+
+
+
+
+통행정보 가져오기-------------------------------------------------------
+url:http://www.javabrain.kr:4000/api/lol/travel/get
+{
+ "travelId": 52
+}
+결과) 출발지만 입력하고 목적지가 없는경우,
+{
+ "result": 0,
+ "data": {
+  "_id": 52,
+  "userId": "eastflag@gmail.com",
+  "__v": 0,
+  "origin": {
+   "lat": 37.5044297,
+   "lng": 126.9384374,
+   "address": "대한민국 서울특별시 동작구 상도2동 366-31"
+  },
+  "travelInfo": {
+   "flight": 2,
+   "mode": 3,
+   "purpose": 7
+  },
+  "created": "2015-10-28T09:52:18.236Z"
+ }
+}
+
+출발지가 있는경우 위치정보 가져오기---------------------------------------------
+url:http://www.javabrain.kr:4000/api/lol/location/get
+{
+ "travelId": 52
+}
 
 
 url:http://www.javabrain.kr:4000/api/lol/travel/getlist-------------------------------------------------------------

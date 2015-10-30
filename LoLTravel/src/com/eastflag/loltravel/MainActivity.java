@@ -16,6 +16,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -44,16 +46,16 @@ import com.eastflag.loltravel.service.MyLocationService;
 import com.eastflag.loltravel.utils.PreferenceUtil;
 import com.eastflag.loltravel.utils.SharedObjects;
 import com.eastflag.loltravel.utils.Utils;
-import com.sromku.simple.fb.Permission.Type;
-import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.entities.Profile;
-import com.sromku.simple.fb.listeners.OnLoginListener;
-import com.sromku.simple.fb.listeners.OnLogoutListener;
-import com.sromku.simple.fb.listeners.OnProfileListener;
+//import com.sromku.simple.fb.Permission.Type;
+//import com.sromku.simple.fb.SimpleFacebook;
+//import com.sromku.simple.fb.entities.Profile;
+//import com.sromku.simple.fb.listeners.OnLoginListener;
+//import com.sromku.simple.fb.listeners.OnLogoutListener;
+//import com.sromku.simple.fb.listeners.OnProfileListener;
 
 public class MainActivity extends Activity {
 	
-	private SimpleFacebook mSimpleFacebook;
+	//private SimpleFacebook mSimpleFacebook;
 	
 	private TextView btnLogout, btnName;
 	private ImageView iv_pin;
@@ -83,7 +85,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSimpleFacebook = SimpleFacebook.getInstance(this);
+		//mSimpleFacebook = SimpleFacebook.getInstance(this);
 		setContentView(R.layout.activity_main);
 		
 		init();
@@ -159,7 +161,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mSimpleFacebook = SimpleFacebook.getInstance(this);
+		//mSimpleFacebook = SimpleFacebook.getInstance(this);
 		
 		/*findViewById(R.id.mainLayout).setVisibility(View.GONE);
 		mFragment = new SetupFragment();
@@ -179,7 +181,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+		//mSimpleFacebook.onActivityResult(this, requestCode, resultCode, data);
 	}
 	
 	@Override
@@ -224,7 +226,16 @@ public class MainActivity extends Activity {
 		btnTrip.setOnClickListener(mMenuClick);
 		btnRanking.setOnClickListener(mMenuClick);
 		
-		findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
+		//앱 버전 정보 프린트하기
+		String version = "";
+		try {
+			PackageInfo i = getPackageManager().getPackageInfo(getPackageName(), 0);
+			version = i.versionName;
+		} catch(NameNotFoundException e) { }
+		TextView tv_version = (TextView) findViewById(R.id.tv_version);
+		tv_version.setText(version);
+		
+		/*findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mSimpleFacebook.login(new OnLoginListener() {
@@ -255,7 +266,7 @@ public class MainActivity extends Activity {
 					}
 				});
 			}
-		});
+		});*/
 	}
 	
 	private void checkLogin() {
@@ -284,7 +295,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	private void getProfile() {
+	/*private void getProfile() {
 		mSimpleFacebook.getProfile(new OnProfileListener() {
 			@Override
 			public void onThinking() {
@@ -322,7 +333,7 @@ public class MainActivity extends Activity {
 				checkSurveyExist();
 			}
 		});
-	}
+	}*/
 	
 	private void checkSurveyExist() {
 		btnName.setText(PreferenceUtil.instance(MainActivity.this).getName());

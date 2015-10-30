@@ -138,6 +138,7 @@ public class TripFragment extends Fragment {
 	private void getTravelInfo() {
 		int travelId = PreferenceUtil.instance(getActivity()).getTravelInfo();
 		if(travelId == 0) {
+			mProgress.dismiss();
 			//기존 여행정보가 없다면 설문조사를 보여주고, 지도상에 origin 아이콘 표시한다.
 			if(mLocation != null) {
 				Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
@@ -156,6 +157,7 @@ public class TripFragment extends Fragment {
 		JSONObject json = new JSONObject();
 
 		try {
+			mProgress.setTitle("Getting Travel Infomation...");
 			json.put("travelId", PreferenceUtil.instance(getActivity()).getTravelInfo());
 			
 			Log.d("LDK", "url:" + url);
@@ -179,6 +181,7 @@ public class TripFragment extends Fragment {
 								btnOrigin.setTextColor(Color.GRAY);
 								GetLocation();
 							} else {
+								mProgress.dismiss();
 								//출발지가 없다면 지도에 현재위치를 출발지로 설정한다.
 				                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
 				                        .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
@@ -530,6 +533,7 @@ public class TripFragment extends Fragment {
 	}
 	
 	private void GetLocation() {
+		mProgress.setTitle("Getting Location Infomation...");
 		String url = LoLApplication.HOST + LoLApplication.API_LOCATION_GET;
 		JSONObject json = new JSONObject();
 		try {
@@ -545,6 +549,8 @@ public class TripFragment extends Fragment {
 					//update or insert
 					try {
 						if(object.getInt("result") == 0) {
+							mProgress.dismiss();
+							
 							ArrayList<MyLocation> mMyLocationList = new ArrayList<MyLocation>();
 							JSONArray array = object.getJSONArray("data");
 							for(int i=0; i< array.length(); ++i) {
@@ -565,21 +571,28 @@ public class TripFragment extends Fragment {
 
 							});
 							
+							//현재위치를 가져온 위치의 맨 마지막에 추가한다.
+							MyLocation loc = new MyLocation();
+							loc.lat = mLocation.getLatitude();
+							loc.lng = mLocation.getLongitude();
+							mMyLocationList.add(loc);
+							
+							
 							for(MyLocation locatoin : mMyLocationList) {
 								Log.d("LDK", locatoin.created + ":" + locatoin.lat + "," + locatoin.lng);
 							}
 							
 							//위치가 한개 이하일 경우
-							if(mMyLocationList.size() <= 1) {
+/*							if(mMyLocationList.size() <= 1) {
 				                Marker startMarker = mGoogleMap.addMarker(new MarkerOptions()
 				                        .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
 				                        .title(getString(R.string.origin))
 				                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_origin))
 				                        .snippet(Utils.getAddress(getActivity(), mLocation.getLatitude(), mLocation.getLongitude())));
 				                startMarker.showInfoWindow();
-				            } else {
+				            } else {*/
 							
-								//위치가 2개이상 존재할 경우
+								//위치가 2개이상 존재할 경우, 현재위치를 추가하면 항상 위치가 2개이상임.
 								for (int i = 0; i < mMyLocationList.size() - 1; ++i) {
 									//시작점
 									if(i==0) {
@@ -594,7 +607,7 @@ public class TripFragment extends Fragment {
 									mGoogleMap.addPolyline(new PolylineOptions()
 					                        .add(new LatLng(mMyLocationList.get(i).lat, mMyLocationList.get(i).lng),
 					                                new LatLng(mMyLocationList.get(i+1).lat, mMyLocationList.get(i+1).lng))
-					                        .width(15).color(Color.RED).geodesic(true));
+					                        .width(12).color(Color.RED).geodesic(true));
 									
 									//끝점
 									if(i==(mMyLocationList.size()-2)) {
@@ -607,7 +620,7 @@ public class TripFragment extends Fragment {
 						            }
 					            }
 				            }
-						}
+						//}
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -641,11 +654,12 @@ public class TripFragment extends Fragment {
 	GoogleApiClient.ConnectionCallbacks mCallbacks = new GoogleApiClient.ConnectionCallbacks() {
 		@Override
         public void onConnected(Bundle bundle) {
-			mProgress.dismiss();
+			
     		Log.d("LDK", "TripFragment: Location onConnected:");
     		mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     		
     		if (mLocation == null) {
+    			mProgress.dismiss();
     			Utils.showToast(getActivity(), "Can't find current location. Please retry");
             	((MainActivity)getActivity()).onBackPressed();
     		} else {
@@ -672,36 +686,3 @@ public class TripFragment extends Fragment {
         }
     };
 }
-
-//travel info insert
-/*
- result:{
- "result": 0,
- "data": {
-  "__v": 0,
-  "userId": "eastflag@gmail.com",
-  "_id": "554c1773269b3d580f9217d7",
-  "travelInfo": {
-   "flight": 1,
-   "mode": 2,
-   "purpose": 3
-  },
-  "created": "2015-05-08T01:54:59.479Z"
- }
-} 
- */
-
-/*
-http://www.javabrain.kr:4000/api/lol/location/get
-{
-    "result": 0,
-    "data": [{
-        "_id": "554c1813269b3d580f9217d9",
-        "travelId": "554c180a269b3d580f9217d8",
-        "lat": 37.5275129,
-        "lng": 126.7148948,
-        "__v": 0,
-        "created": "2015-05-08T01:57:39.283Z"
-    }, {
-    ...
-    */
